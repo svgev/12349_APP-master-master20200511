@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="8">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="0.35"></LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        >
+
+                    <RelativeLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        />
+                    <ImageView
+                        android:layout_width="70dp"
+                        android:layout_height="70dp"
+                        android:background="@drawable/usericon_circle" />
+                        <TextView
+                            android:id="@+id/txtUserName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="用户：gao"
+                            android:layout_marginTop="6dp"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:textColor="#949494"
+                            android:layout_marginLeft="95dp"
+                            />
+                        <TextView
+                            android:id="@+id/txtRole"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="权限：片区管理员"
+                            android:layout_marginTop="35dp"
+                            android:textSize="17sp"
+                            android:textStyle="bold"
+                            android:textColor="#949494"
+                            android:layout_marginLeft="95dp"
+                            />
+                    </RelativeLayout></LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="10dp"
+                        android:background="#E9E9E8"
+                        android:paddingBottom="10dp">
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center_horizontal">
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="0dp">
+                        <TextView
+                            android:layout_width="2.0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="27dp"
+                            android:text=""
+                            android:background="#317D6D"
+                            android:textSize="15sp"
+
+                            />
+                        <TextView
+                            android:id="@+id/txt"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:layout_marginLeft="9dp"
+                            android:textColor="#317D6D"
+                            android:text="详细信息"
+                            android:textSize="17sp" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="0dp"
+                            android:text="真实姓名："
+                            android:textColor="#7F7F7F"
+                            android:textSize="17sp"
+                            />
+                        <TextView
+                            android:id="@+id/txtTrueName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="95dp"
+                            android:layout_marginTop="0dp"
+                            android:textColor="#7F7F7F"
+                            android:text="高乾辉"
+                            android:textSize="17sp"
+                            /></RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="270dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="0dp"
+                            android:textColor="#7F7F7F"
+                            android:text="住址："
+                            android:textSize="17sp"
+                            />
+                        <TextView
+                            android:id="@+id/txtAddr"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="60dp"
+                            android:layout_marginTop="0dp"
+                            android:text="德清县武康镇舞阳社区"
+                            android:textColor="#7F7F7F"
+                            android:textSize="17sp"
+                            /></RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="270dp"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_gravity="center_horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginTop="0dp"
+                            android:text="管理片区："
+                            android:textColor="#7F7F7F"
+                            android:textSize="17sp"
+                            />
+                        <TextView
+                            android:id="@+id/txtArea"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="95dp"
+                            android:layout_marginTop="0dp"
+                            android:text="乾元镇、雷甸镇"
+                            android:textColor="#7F7F7F"
+                            android:textSize="17sp"
+                            /></RelativeLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2.2"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/txt_vision"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="5dp"
+            android:text="当前版本号："
+            android:textSize="14sp" />
+
+    <Button
+        android:id="@+id/btnAdminQuit"
+        android:layout_width="170dp"
+        android:layout_height="55dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="0dp"
+        android:text="注销"/></LinearLayout>
+
+
+</LinearLayout>
+
+
+    <!--<ImageView--><!--android:id="@+id/imgPhoto"--><!--android:layout_width="100dp"--><!--android:layout_height="0dp"--><!--android:layout_marginStart="12dp"--><!--android:layout_marginLeft="12dp"--><!--android:layout_marginBottom="24dp"--><!--app:layout_constraintBottom_toTopOf="@+id/txtTown"--><!--app:layout_constraintStart_toEndOf="@+id/textView10"--><!--app:layout_constraintTop_toTopOf="@+id/textView3" />-->
+
+

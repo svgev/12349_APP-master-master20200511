@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:descendantFocusability="blocksDescendants"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/helperImage"
+        android:layout_width="66dp"
+        android:layout_height="66dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:src="@color/txtcolor" />
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/olderImage"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/userIcon"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="3dp">
+
+        <TextView
+            android:id="@+id/helperName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:maxLength="11"
+            android:text="高乾辉"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+            <TextView
+                android:id="@+id/helperId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:text="123"
+                android:visibility="invisible"
+                android:textSize="16sp" /></RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="4dp">
+        <TextView
+            android:id="@+id/helperTown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="武康街道"
+            android:textColor="#868686"
+            android:textSize="15sp" />
+            </RelativeLayout>
+        <TextView
+            android:id="@+id/helperMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#868686"
+            android:text="手机：17826833512"
+            android:layout_marginLeft="80dp"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

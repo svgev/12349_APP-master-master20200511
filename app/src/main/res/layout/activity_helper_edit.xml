@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2"
+        ></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgPhoto"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true" />
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/usericon_circle" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.1"
+        ></LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="7"
+        android:orientation="vertical">
+        <!--助老员姓名-->
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓    名 "
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtName"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:hint=""
+                android:background="@drawable/edit_background"
+                android:textColor="#949494"
+                android:textColorHint="#949494"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="性    别 "
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:scrollbarStyle="insideOverlay"
+                android:id="@+id/txtSex"
+                android:background="@drawable/edit_background"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:text=""
+                android:textColor="#949494"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机号 "
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtPhoneNumber"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:background="@drawable/edit_background"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:hint=""
+                android:paddingLeft="10dp"
+                android:textColor="#949494"
+                android:textColorHint="#949494"
+                android:inputType="text"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/phoneNumberChecked"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机号不能为空"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="90dp"
+                android:textSize="14sp"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtIdentityId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证 "
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtIdentityId"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:hint=""
+                android:background="@drawable/edit_background"
+                android:textColor="#949494"
+                android:textColorHint="#949494"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="0dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/checkId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证格式不正确"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="90dp"
+                android:textSize="14sp"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                />
+            <TextView
+                android:id="@+id/existedId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证已存在"
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="90dp"
+                android:textSize="14sp"
+                android:textColor="@color/red"
+                android:visibility="invisible"
+                />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="27dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtTown"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="乡    镇 "
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/edtTown"
+                android:layout_width="210dp"
+                android:background="@drawable/edit_background"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:text=""
+                android:textColor="#949494"
+                android:paddingTop="2dp"
+                android:paddingLeft="10dp"
+                android:paddingBottom="2dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtVillage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="街    道 "
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <TextView
+                android:scrollbarStyle="insideOverlay"
+                android:id="@+id/edtVillage"
+                android:background="@drawable/edit_background"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:text=""
+                android:textColor="#949494"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:paddingLeft="10dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/txtAddr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="住    址 "
+                android:layout_marginTop="2dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/edtAddr"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="90dp"
+                android:hint=""
+                android:textColor="#949494"
+                android:background="@drawable/edit_background"
+                android:textColorHint="#949494"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textSize="18sp" />
+        </RelativeLayout>
+        <Button
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:id="@+id/btnSubmit"
+            android:layout_marginTop="40dp"
+            android:layout_gravity="center_horizontal"
+            android:text="提交"/>
+
+
+
+    </LinearLayout>
+    <!--
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <cn.deesoft.serviceplatform.ScrollSelector
+        android:id="@+id/scrollSelector"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@android:color/darker_gray"/>
+</RelativeLayout>-->
+
+
+</LinearLayout>

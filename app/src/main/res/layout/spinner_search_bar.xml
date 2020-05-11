@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="63dp"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:background="@color/workorderBk"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="75dp"
+            android:layout_height="45dp">
+
+            <LinearLayout
+                android:layout_width="73dp"
+                android:layout_height="43dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginBottom="2dp"
+                >
+
+                <Spinner
+                    android:id = "@+id/spinner"
+                    android:layout_width = "72dp"
+                    android:layout_height="40dp"
+                    android:padding="0dp"
+                    >
+                </Spinner >
+
+            </LinearLayout>
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+            //默认光标不在搜索框
+            <LinearLayout
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:layout_width="0px"
+                android:layout_height="0px" />
+            <EditText
+                android:id="@+id/search_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="12dp"
+                android:background="@drawable/search_text"
+                android:hint="请输入搜索内容"
+                android:maxLength="10"
+                android:paddingLeft="15dp"
+                android:paddingBottom="8.6dp"
+                android:singleLine="true"
+                android:textSize="19sp" />
+            <ImageView
+                android:id="@+id/bt_delete_text"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="16.5dp"
+                android:paddingRight="10dp"
+                android:src="@mipmap/delete_button" />
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/search_button_1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center_horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="11.5dp"
+            android:textColor="@color/white"
+            android:paddingTop="9dp"
+            android:background="@drawable/search_button"
+            android:textSize="19sp"
+            android:text="查询"/>
+    </LinearLayout>
+</LinearLayout>

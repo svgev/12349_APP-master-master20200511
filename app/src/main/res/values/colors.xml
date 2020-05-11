@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="ic_launcher_background">#ffffff</color>
+    <color name="time">	#939393</color>
+    <color name="price">#8e050d</color>
+    <color name="workorderBk">#F3F3F3</color>
+    <color name="login">#b92b0a</color>
+    <color name="cannotlogin">#858585</color>
+    <color name="txtcolor">#b92b0a</color>
+    <color name="actionBar">#B55A3F</color>
+    <color name="firstPage">#CEE3F9</color>
+    <color name="red">#eb2127</color>
+    <color name="white">#ffffff</color>
+    <color name="black">#111111</color>
+</resources>

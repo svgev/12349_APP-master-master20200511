@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="fill">
+
+
+        <LinearLayout
+            android:id="@+id/login_logo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.5"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:src="@mipmap/background" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Identity"
+            android:layout_width="260dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/Identity_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="身份证:"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp"/>
+
+            <EditText
+                android:id="@+id/txtIdentity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:background="@drawable/edittext_bk"
+                android:hint="请输入身份证号"
+                android:textColor="#2C2C2C"
+                android:textColorHint="#949494"
+                android:inputType="text"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/PhoneNumber"
+            android:layout_width="260dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
+            android:layout_weight="0.25"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/PhoneNumber_TextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="手机号:"
+                android:textColor="#2C2C2C"
+                android:textSize="21sp" />
+
+            <EditText
+                android:id="@+id/txtPhoneNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:background="@drawable/edittext_bk"
+                android:textColorHint="#949494"
+                android:hint="请输入手机号"
+                android:textColor="#2C2C2C"
+                android:inputType="phone" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/login_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.5"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnBind"
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/button_shape"
+                android:text="@string/login"
+                android:textAllCaps="false"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="26sp"
+                tools:text="@string/login" />
+
+            <LinearLayout
+                android:layout_width="260dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/adminLoginTxt"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="#00000000"
+                    android:clickable="true"
+                    android:textSize="16sp"
+                    android:text=" 管理员登陆"
+                    android:textColor="@color/cannotlogin" />
+
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="125dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:background="#00000000"
+                    android:clickable="true"
+                    android:gravity="center|right"
+                    android:text="@string/cannotlogin"
+                    android:textSize="16sp"
+                    android:textColor="@color/cannotlogin"
+                    tools:text="@string/cannotlogin" /></LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/service"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="0.25"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="德清县12349便民服务中心"
+                tools:text="德清县12349便民服务中心" />
+
+            <TextView
+                android:id="@+id/txtCannotLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="服务热线：12349"
+                tools:text="服务热线：12349" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

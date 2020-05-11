@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HelperListActivity">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include layout="@layout/search_bar" />
+
+
+        <cn.deesoft.serviceplatform.LoadHelperList
+            android:id="@+id/helper_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:choiceMode="singleChoice"
+
+            android:dividerHeight="1.2dp"
+            android:headerDividersEnabled="false"
+            android:scrollbars="vertical"
+
+            android:splitMotionEvents="false" />
+
+
+    </LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>

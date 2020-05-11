@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="ifContentScrolls">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EndServiceActivity">
+    <!--第一部分-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp">
+
+        <RelativeLayout
+            android:id="@+id/userIcon"
+            android:layout_width="72dp"
+            android:layout_height="68dp"
+            android:layout_centerVertical="true">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imgPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/nophoto" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/usericon_circle" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/userIcon"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/txtOlderName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="王祖国"
+                android:maxLength="4"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/txtIsLiving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:text="(在世)"
+                    android:maxLength="4"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="invisible"
+                    android:textStyle="bold" /></LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="27dp"
+                android:layout_marginTop="8dp">
+                <TextView
+                android:id="@+id/txtAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:text="24岁"
+                android:textSize="16sp" />
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/navigation"
+                    android:visibility="visible">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtNavigation"
+                    android:layout_marginLeft="50dp"
+                    android:text="位置导航"
+                    android:textColor="#317D6D"
+                    android:textSize="16sp" />
+                <TextView
+                    android:layout_width="22.2dp"
+                    android:layout_height="21.4dp"
+                    android:id="@+id/imgNavigation"
+                    android:background="@mipmap/navigation1"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginLeft="117dp"
+                    android:textColor="#317D6D"
+                    android:textSize="18sp"/></RelativeLayout></RelativeLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/takePhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:elevation="10dp"
+            android:src="@mipmap/takephoto" />
+    </RelativeLayout>
+
+    <!--老人手机号-->
+    <LinearLayout
+        android:id="@+id/txt_older_mobile"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="手机号"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_bk"
+            android:hint="请输入老人手机号"
+            android:inputType="phone" />
+    </LinearLayout>
+    <!--老人身体状况-->
+    <LinearLayout
+        android:id="@+id/txt_older_health"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="身体状况"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/txtHealthy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edittext_bk"
+            android:hint="请输入老人身体情况"
+            android:inputType="phone" />
+
+    </LinearLayout>
+
+
+    <!--第二部分-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="6dp"
+            android:text="服务内容"
+            android:textSize="18sp"
+            android:textColor="@color/txtcolor"/>
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:stretchMode="columnWidth"
+            android:verticalSpacing="1dp"
+            android:numColumns="2" />
+
+        <TextView
+            android:id="@+id/textView19"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="6dp"
+            android:text="开始时间"
+            android:textColor="@color/txtcolor"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtStartTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="6dp"
+            android:text="   "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="6dp"
+            android:text="服务时长"
+            android:textColor="@color/txtcolor"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/txtServiceTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:layout_marginLeft="6dp"
+            android:text="   "
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnEndService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_shape"
+        android:layout_centerInParent="true"
+        android:text="结束服务"
+        android:textColor="@color/ic_launcher_background"
+        android:textSize="18sp" />
+
+</LinearLayout>
+</ScrollView>

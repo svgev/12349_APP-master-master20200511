@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/myScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="8">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                    <LinearLayout
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            >
+
+                            <cn.deesoft.serviceplatform.MapContainer
+                                android:id="@+id/map_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+                                <com.amap.api.maps.MapView
+                                    android:id="@+id/mapView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" /></cn.deesoft.serviceplatform.MapContainer>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="4"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center_horizontal"
+                                android:orientation="vertical">
+                                <!--助老员姓名-->
+                                <TextView
+                                    android:id="@+id/txtHelperName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="40dp"
+                                    android:text=""
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="12dp">
+                                    <!--<TextView
+                                android:id="@+id/txtSex"
+                                android:layout_width="280dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="4dp"
+                                android:text="性别："
+                                android:textSize="18sp" />-->
+                                    <TextView
+                                        android:id="@+id/txtHelperId"
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:text="编号："
+                                        android:textSize="18sp" />
+                                </RelativeLayout>
+                                <!--助老员电话-->
+                                <TextView
+                                    android:id="@+id/txtPhoneNumber"
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="联系电话："
+                                    android:textSize="18sp" />
+                                <!--助老员编号-->
+
+                                <!--助老员身份证号身份证号-->
+                                <TextView
+                                    android:id="@+id/txtIdentityId"
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="身份证号："
+                                    android:textSize="18sp" />
+
+                                <!--助老员所在乡镇-->
+                                <TextView
+                                    android:id="@+id/txtTown"
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="乡镇："
+                                    android:textSize="18sp" />
+                                <!--助老员所在街道-->
+                                <TextView
+                                    android:id="@+id/txtVillage"
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="街道："
+                                    android:textSize="18sp" />
+                                <!--助老员地址-->
+                                <TextView
+                                    android:id="@+id/txtAddr"
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp"
+                                    android:text="住址："
+                                    android:textSize="18sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp"></LinearLayout>
+                                <Button
+                                    android:id="@+id/edit_button"
+                                    android:layout_width="200dp"
+                                    android:layout_height="55dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:text="编辑" />
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="20dp"></LinearLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/imgPhoto"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginTop="260dp"
+                        android:layout_centerHorizontal="true"  />
+
+                    <ImageView
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
+                        android:layout_marginTop="260dp"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/usericon_circle" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
+
+
+    <!--<ImageView--><!--android:id="@+id/imgPhoto"--><!--android:layout_width="100dp"--><!--android:layout_height="0dp"--><!--android:layout_marginStart="12dp"--><!--android:layout_marginLeft="12dp"--><!--android:layout_marginBottom="24dp"--><!--app:layout_constraintBottom_toTopOf="@+id/txtTown"--><!--app:layout_constraintStart_toEndOf="@+id/textView10"--><!--app:layout_constraintTop_toTopOf="@+id/textView3" />-->
+
+
