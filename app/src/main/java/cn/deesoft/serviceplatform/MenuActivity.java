@@ -47,6 +47,7 @@ import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import Model.ResultInfo;
@@ -117,15 +118,21 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         //检查当前版本是否为最新版本
         checkVersion();
 
+
+
+
         try {
             //开始服务
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //android8.0以上通过startForegroundService启动service
+                if(!UrlData.getLocationServiceStarted()){
                 startForegroundService(new Intent(this, LocalService.class));
-                startService(new Intent(this, RomoteService.class));
+                startService(new Intent(this, RomoteService.class));}
             } else {
-                startService(new Intent(this, LocalService.class));
-                startService(new Intent(this, RomoteService.class));
+                if(!UrlData.getLocationServiceStarted()) {
+                    startService(new Intent(this, LocalService.class));
+                    startService(new Intent(this, RomoteService.class));
+                }
             }
         }
         catch (Exception ex)
@@ -139,12 +146,12 @@ public class MenuActivity extends Activity implements View.OnClickListener{
         intentFilter.addAction(Intent.ACTION_SCREEN_ON);
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
         //注册广播
-        registerReceiver(MyBroadCastReciever, intentFilter);
+         registerReceiver(MyBroadCastReciever, intentFilter);
 
         //判断是否开启gps
         lm = (LocationManager) this.getSystemService(this.LOCATION_SERVICE);
         boolean ok = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (ok) {//开了定位服务
+        if (ok) {//开了定位服务，就直接跳转，不用新建服务
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);

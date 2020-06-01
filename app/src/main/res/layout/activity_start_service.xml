@@ -65,41 +65,71 @@
             android:layout_width="wrap_content"
             android:layout_height="27dp"
             android:layout_marginTop="5dp">
-
             <TextView
                 android:id="@+id/txtAge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="24岁"
                 android:textSize="17sp" />
-
-            <RelativeLayout
-                android:id="@+id/navigation"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="invisible">
-
+                android:orientation="horizontal"
+                >
                 <TextView
-                    android:id="@+id/txtNavigation"
+                    android:id="@+id/txtNavigation1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="50dp"
                     android:text="位置导航"
                     android:textColor="#317D6D"
-                    android:textSize="17sp" />
-
-                <TextView
-                    android:layout_width="23.7dp"
-                    android:layout_height="23dp"
-                    android:layout_marginLeft="130dp"
-                    android:layout_marginTop="0.8dp"
-                    android:background="@mipmap/navigation1"
+                    android:textSize="16sp" />
+                <ImageView
+                    android:id="@+id/imgNavigation"
+                    android:layout_width="19dp"
+                    android:layout_height="18dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@mipmap/navigation3"
+                    android:visibility="invisible"
+                    android:scaleType="fitXY"
                     android:textColor="#317D6D"
                     android:textSize="18sp" />
-            </RelativeLayout>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="27dp"
+            android:layout_marginTop="2dp">
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/txtOldRemainTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:text="剩余服务时间："
+                    android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/txtRemainTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="0dp"
+                    android:text="1"
+                    android:textSize="16sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="分钟"
+                    android:textSize="16sp" />
+            </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
 </LinearLayout>
    <!-- <LinearLayout
         android:layout_width="240dp"
@@ -107,9 +137,6 @@
         android:layout_marginTop="17dp"
         android:background="#afafaf"
         android:visibility="visible"></LinearLayout>-->
-
-
-
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

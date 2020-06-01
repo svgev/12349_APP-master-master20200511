@@ -8,6 +8,7 @@ public class  Older {
     private String ID;
     private Boolean isLiving;
     private String village;
+    private int remainTime=240;
 
     public Older(String name, int imageId,int old,String identityId){
         this.imageId=imageId;
@@ -25,17 +26,17 @@ public class  Older {
         this.village=village;
         this.isLiving=true;
     }
-
-    public Older(String name, int imageId,int old,String identityId,String id,Boolean isLiving) {
-        this.imageId=imageId;
-        this.olderName=name;
-        this.ageNum=old;
-        this.identityId=identityId;
-        this.isLiving=true;
-        this.ID=id;
-        this.isLiving=isLiving;
-
-    }
+//
+//    public Older(String name, int imageId,int old,String identityId,String id,Boolean isLiving) {
+//        this.imageId=imageId;
+//        this.olderName=name;
+//        this.ageNum=old;
+//        this.identityId=identityId;
+//        this.isLiving=true;
+//        this.ID=id;
+//        this.isLiving=isLiving;
+//
+//    }
 
 
 
@@ -61,6 +62,9 @@ public class  Older {
     public Boolean getIsLiving(){
         return isLiving;
     }
+    public int getRemainTime(){
+        return remainTime;
+    }
 
 
     public void setName(String name) {
@@ -75,4 +79,7 @@ public class  Older {
     public void setIdentityId(String identityId){this.identityId=identityId;}
     public void setID(String id){this.ID=id;}
     public void setIsLiving(Boolean isLiving){this.isLiving=isLiving;}
+    public void setRemainTime(int remainTime){
+        this.remainTime=remainTime;
+    }
 }

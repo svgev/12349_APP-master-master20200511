@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -88,6 +89,8 @@ public class OlderDetailActivity extends AppCompatActivity {
     private TextView txtTown;
     private TextView txtVillage;
     private TextView txtAddress;
+    private TextView txtLongitude;
+    private TextView txtLatitude;
     private TextView txtContactNumber;
     private TextView txtContactName;
     private TextView txtContactRelationship;
@@ -96,6 +99,7 @@ public class OlderDetailActivity extends AppCompatActivity {
 
     private TextView txtIsLiving;
     private ImageView imgPhoto;
+    private Button btnUpdateLocation;
     private SimpleDateFormat df;
     private ScrollView scrollView;
     Boolean apkExist;
@@ -112,6 +116,8 @@ public class OlderDetailActivity extends AppCompatActivity {
         ID = intent.getStringExtra("ID");
         olderMobile = null;
         olderAddress=null;
+        txtLongitude=findViewById(R.id.txtLongitude);
+        txtLatitude=findViewById(R.id.txtLatitude);
         txtOlderID=findViewById(R.id.txtNumber);
         txtOlderID.setText(ID);
 
@@ -134,16 +140,23 @@ public class OlderDetailActivity extends AppCompatActivity {
 
         scrollView = (ScrollView) findViewById(R.id.myScrollView);
         map_container = (MapContainer) findViewById(R.id.map_container);
+        btnUpdateLocation=findViewById(R.id.btnLocation);
         map_container.setScrollView(scrollView);
-
-
-
 
         imgPhoto = findViewById(R.id.imgPhoto);
         Glide.with(OlderDetailActivity.this).load(R.mipmap.nophoto2).into(imgPhoto);
 
 
 
+        btnUpdateLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent();
+                intent.putExtra("ID",ID);
+                intent.setClass(OlderDetailActivity.this,UpdateLocationActivity.class);
+                OlderDetailActivity.this.startActivity(intent);
+            }
+        });
 
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -208,8 +221,6 @@ public class OlderDetailActivity extends AppCompatActivity {
                             String birthday = map.get("Birthday").toString();
                             birthday = birthday.substring(0, birthday.indexOf("T"));
                             int age = DateUtil.getAgeFromBirthTime(birthday);
-
-
                             if(map.get("Addr")!=(null)){
                             olderAddress = map.get("Addr").toString()+" ➯";
                             guideAddress=map.get("Addr").toString();}else {
@@ -220,15 +231,25 @@ public class OlderDetailActivity extends AppCompatActivity {
                                 olderMobile="暂无";
                             }
 
-                            if(map.get("Longitude").toString().equals("0.0")){
+                            if(map.get("Longitude").toString().equals("0.0")||map.get("Longitude").toString().equals("0.0")){
                                 //如果没有有效经纬度传回，先根据地址查找经纬度再标点
+                                txtLongitude.setText("Longitude/"+map.get("Longitude").toString());
+                                txtLatitude.setText("Latitude/"+map.get("Latitude").toString());
                                 getLocationFromApi();
                             }
-                            if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))){
+                            if(map.get("Longtitude")==null||map.get("Latitude")==null){
+                                txtLongitude.setText("Longitude/");
+                                txtLatitude.setText("Latitude/");
+                                getLocationFromApi();
+                            }
+                            if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))&&map.get("Longitude")!=null&&map.get("Latitude")!=null){
                                 //如果传回有效经纬度，直接标点
                                 dlngX=map.get("Longitude").toString();
                                 dlatY=map.get("Latitude").toString();
                                 setMyMarker(dlngX,dlatY);
+                                //显示经纬度数值
+                                txtLongitude.setText("Longitude/"+map.get("Longitude").toString());
+                                txtLatitude.setText("Latitude/"+map.get("Latitude").toString());
                             }
 
                             //判断在世

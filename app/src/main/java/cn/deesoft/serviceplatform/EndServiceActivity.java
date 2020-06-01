@@ -81,7 +81,8 @@ public class EndServiceActivity extends BaseActivity {
     private EditText txtHealthy;
     private TextView txtNavigation;
     private TextView txtIsLiving;
-    private View navigation;
+    private TextView navigation;
+    private ImageView imgNavigation;
 
     private SharedPreferences sp;
     private SharedPreferences objectSp;
@@ -158,9 +159,7 @@ public class EndServiceActivity extends BaseActivity {
         int age= DateUtil.getAgeFromBirthTime(birthday);
         txtAge.setText(age+"岁");
         String photoUrl=bundle.getString("Photo");
-
         txtNavigation=findViewById(R.id.txtNavigation);
-        navigation=findViewById(R.id.navigation);
         olderId=bundle.getString("OlderID");
         trueName=bundle.getString("OlderName");
         GetOlderPoint();
@@ -204,6 +203,16 @@ public class EndServiceActivity extends BaseActivity {
         } catch (Exception ex) {
             Toast.makeText(EndServiceActivity.this, ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+        txtNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(apkExist){
+                    openAppToGuide();
+                }else {
+                    openBrowserToGuide();
+                }
+            }
+        });
 
 //        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
@@ -250,8 +259,6 @@ public class EndServiceActivity extends BaseActivity {
                         result = sb.delete(0, 1).toString();
                         showMyDialog();
                     }
-
-
             }
         });
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -280,7 +287,6 @@ public class EndServiceActivity extends BaseActivity {
                             Log.e("asd", "设备没有SD卡");
                         }
                     }
-
                     @Override
                     public void denied() {
                         Toast.makeText(EndServiceActivity.this, "部分权限获取失败，正常功能受到影响", Toast.LENGTH_LONG).show();
@@ -426,13 +432,11 @@ public class EndServiceActivity extends BaseActivity {
 
 
     private void GetOlderPoint(){
-
         ResultInfoList<Object> list = new ResultInfoList<Object>();
         new Thread() {
             @Override
             public void run() {
                 Message msg = new Message();
-
                 String url = UrlData.getUrlYy() + "/api/Default/GetOlderById?olderId="+olderId;
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
@@ -485,22 +489,21 @@ public class EndServiceActivity extends BaseActivity {
                             dlngX=map.get("Latitude").toString();
                             dlatY=map.get("Longitude").toString();
                             //Toast.makeText(EndServiceActivity.this, "有经纬度", Toast.LENGTH_SHORT).show();
-
                             if (apkExist) {
                                 //Toast.makeText(EndServiceActivity.this, "检测到高德地图", Toast.LENGTH_SHORT).show();
                             } else {
                                 //Toast.makeText(EndServiceActivity.this, "未检测到高德地图", Toast.LENGTH_SHORT).show();
                             }
-                            navigation.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(apkExist){
-                                        openAppToGuide();
-                                    }else {
-                                        openBrowserToGuide();
-                                    }
-                                }
-                            });
+//                            txtNavigation.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    if(apkExist){
+//                                        openAppToGuide();
+//                                    }else {
+//                                        openBrowserToGuide();
+//                                    }
+//                                }
+//                            });
 
 
                         }
@@ -509,9 +512,8 @@ public class EndServiceActivity extends BaseActivity {
 
                             //没有经纬度的情况
                             if(map.get("Addr").toString().equals(null)){
-                                navigation.setVisibility(View.INVISIBLE);
+                                imgNavigation.setVisibility(View.INVISIBLE);
                                 Toast.makeText(EndServiceActivity.this, "地址不存在", Toast.LENGTH_SHORT).show();
-
                             }
                             if(!map.get("Addr").toString().equals(null)){
                                 //Toast.makeText(EndServiceActivity.this, "有地址", Toast.LENGTH_SHORT).show();
@@ -538,17 +540,16 @@ public class EndServiceActivity extends BaseActivity {
                                             String location = trueAddress.getString("location");
                                             dlngX = location.split(",")[0];
                                             dlatY = location.split(",")[1];
-                                            navigation.setVisibility(View.VISIBLE);
-                                            navigation.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    if(apkExist){
-                                                        openAppToGuide();
-                                                    }else {
-                                                        openBrowserToGuide();
-                                                    }
-                                                }
-                                            });
+//                                            txtNavigation.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    if(apkExist){
+//                                                        openAppToGuide();
+//                                                    }else {
+//                                                        openBrowserToGuide();
+//                                                    }
+//                                                }
+//                                            });
 
                                         } catch (Exception ex) {
                                             ex.printStackTrace();
@@ -572,8 +573,6 @@ public class EndServiceActivity extends BaseActivity {
             else
             {
                 Toast.makeText(EndServiceActivity.this, "出现未知异常", Toast.LENGTH_SHORT).show();
-
-
                 txtNavigation.setVisibility(View.GONE);
             }
 
@@ -637,7 +636,6 @@ public class EndServiceActivity extends BaseActivity {
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
                     clickTimes=clickTimes+1;
                     if (HttpUtil.isFastClick()) {
-
                         mWeiboDialog = DialogUtil.createLoadingDialog(EndServiceActivity.this, "加载中...");
                         new Thread() {
                             @Override

@@ -78,7 +78,8 @@ public class StartServiceActivity extends AppCompatActivity {
     private ImageView imgPhoto;
     private TextView txtNavigation;
     private TextView txtIsLiving;
-    private View navigation;
+    private TextView txtRemainTime;
+    private ImageView imgNavigation;
 
     private String ServiceID;
     private String OlderID;
@@ -102,6 +103,7 @@ public class StartServiceActivity extends AppCompatActivity {
     private String olderAddress;
     public static Boolean isLiving;
     private Boolean apkExist;
+    private String remainTime;
 
     public static Boolean hasStarted;
 
@@ -126,9 +128,11 @@ public class StartServiceActivity extends AppCompatActivity {
         imgPhoto=findViewById(R.id.imgPhoto);
         txtAge=findViewById(R.id.txtAge);
         txtOlderName=findViewById(R.id.txtServiceObject);
-        txtNavigation=findViewById(R.id.txtNavigation);
+        txtNavigation=findViewById(R.id.txtNavigation1);
         txtIsLiving=findViewById(R.id.txtIsLiving);
-        navigation=findViewById(R.id.navigation);
+        txtRemainTime=findViewById(R.id.txtRemainTime);
+        imgNavigation=findViewById(R.id.imgNavigation);
+        imgNavigation.setVisibility(View.INVISIBLE);
         btnStartService=findViewById(R.id.btnStartService);
         gridView1=findViewById(R.id.gridView1);
 
@@ -136,22 +140,20 @@ public class StartServiceActivity extends AppCompatActivity {
         isLiving=bundle.getBoolean("IsLiving");
         OlderID=bundle.getString("OlderID");
         trueName=bundle.getString("OlderName");
+        remainTime=bundle.getString("RemainTime");
         txtOlderName.setText(bundle.getString("OlderName"));
         txtAge.setText(bundle.getString("Age")+"岁");
+        txtRemainTime.setText(remainTime);
         Town=bundle.getString("Town");
 
         String photoUrl=bundle.getString("Photo");
         beStarted="false";
-
-
-
-
         GetOlderPoint();
 
         if(photoUrl.equals("null"))
         {
             if(isLiving)
-            Glide.with(StartServiceActivity.this).load(R.mipmap.nophoto).into(imgPhoto);
+                Glide.with(StartServiceActivity.this).load(R.mipmap.nophoto).into(imgPhoto);
             else {
                 txtIsLiving.setText("(过世)");
                 txtIsLiving.setVisibility(View.VISIBLE);
@@ -304,6 +306,16 @@ public class StartServiceActivity extends AppCompatActivity {
                 }
             }
         });
+        txtNavigation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(apkExist){
+                    openAppToGuide();
+                }else {
+                    openBrowserToGuide();
+                }
+            }
+        });
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -437,6 +449,7 @@ public class StartServiceActivity extends AppCompatActivity {
 
                         if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))){
                             //如果传回有效经纬度，直接标点
+                            imgNavigation.setVisibility(View.VISIBLE);
                             dlngX=map.get("Latitude").toString();
                             dlatY=map.get("Longitude").toString();
                             //Toast.makeText(StartServiceActivity.this, "有经纬度", Toast.LENGTH_SHORT).show();
@@ -446,32 +459,29 @@ public class StartServiceActivity extends AppCompatActivity {
                             } else {
                                 //Toast.makeText(StartServiceActivity.this, "未检测到高德地图", Toast.LENGTH_SHORT).show();
                             }
-                            navigation.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if(apkExist){
-                                        openAppToGuide();
-                                    }else {
-                                        openBrowserToGuide();
-                                    }
-                                }
-                            });
-                            navigation.setVisibility(View.VISIBLE);
-
-
+//                            txtNavigation.setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    if(apkExist){
+//                                        openAppToGuide();
+//                                    }else {
+//                                        openBrowserToGuide();
+//                                    }
+//                                }
+//                            });
                         }
                         if(map.get("Longitude").toString().equals("0.0")){
                             //Toast.makeText(StartServiceActivity.this, "无经纬度", Toast.LENGTH_SHORT).show();
 
                             //没有经纬度的情况
                             if(map.get("Addr")==null){
-                                navigation.setVisibility(View.INVISIBLE);
+                                txtNavigation.setVisibility(View.INVISIBLE);
+                                imgNavigation.setVisibility(View.INVISIBLE);
                                 //Toast.makeText(StartServiceActivity.this, "地址不存在", Toast.LENGTH_SHORT).show();
 
                             }
                             if(map.get("Addr")!=null){
                                 //Toast.makeText(StartServiceActivity.this, "有地址", Toast.LENGTH_SHORT).show();
-                                navigation.setVisibility(View.VISIBLE);
                                 olderAddress = map.get("Addr").toString()+" ?";
                                 guideAddress=map.get("Addr").toString();
                                 ResultInfoList<Object> addrList = new ResultInfoList<Object>();
@@ -494,29 +504,27 @@ public class StartServiceActivity extends AppCompatActivity {
                                             String location = trueAddress.getString("location");
                                             dlngX = location.split(",")[0];
                                             dlatY = location.split(",")[1];
-                                            navigation.setVisibility(View.VISIBLE);
-                                            navigation.setOnClickListener(new View.OnClickListener() {
-                                                @Override
-                                                public void onClick(View v) {
-                                                    if(apkExist){
-                                                        openAppToGuide();
-                                                    }else {
-                                                        openBrowserToGuide();
-                                                    }
-                                                }
-                                            });
-
+                                            imgNavigation.setVisibility(View.INVISIBLE);
+//                                            txtNavigation.setOnClickListener(new View.OnClickListener() {
+//                                                @Override
+//                                                public void onClick(View v) {
+//                                                    if(apkExist){
+//                                                        openAppToGuide();
+//                                                    }else {
+//                                                        openBrowserToGuide();
+//                                                    }
+//                                                }
+//                                            });
                                         } catch (Exception ex) {
                                             ex.printStackTrace();
                                         }
                                     }
                                 }.start();}
                             else{
-                                navigation.setVisibility(View.INVISIBLE);
+                                txtNavigation.setVisibility(View.INVISIBLE);
+                                imgNavigation.setVisibility(View.INVISIBLE);
                             }
                         }
-
-                        //没有详细地址不显示导航
                     }
 
 
@@ -527,7 +535,7 @@ public class StartServiceActivity extends AppCompatActivity {
             }
             else
             {
-                navigation.setVisibility(View.GONE);
+                txtNavigation.setVisibility(View.INVISIBLE);
             }
 
         }
@@ -560,6 +568,7 @@ public class StartServiceActivity extends AppCompatActivity {
     private void openBrowserToGuide() { //打开网页导航
         String url = "http://uri.amap.com/navigation?to="+dlngX+","+dlatY+"," +
                 "目的地"+ "&mode=car&policy=1&src=mypage&coordinate=gaode&callnative=0";
+
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);

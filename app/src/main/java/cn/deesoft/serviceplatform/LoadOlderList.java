@@ -36,17 +36,13 @@ public class LoadOlderList extends ListView implements AbsListView.OnScrollListe
         //注意，这句代码的意思是给自定义的ListView加上底布局
         this.addFooterView(footer);
         this.setOnScrollListener(this);//千万别忘记设定监听器
-
     }
-
 
     //加载数据完成后，需要执行的操作
     public void loadComplete(){
         isLoading = false;
         footer.findViewById(R.id.load_layout).setVisibility(View.INVISIBLE);
-
     }
-
 
     public interface ILoadListener{
         void onLoad();
@@ -55,8 +51,6 @@ public class LoadOlderList extends ListView implements AbsListView.OnScrollListe
     public void setInterface(ILoadListener iLoadListener){
         this.iLoadListener = iLoadListener;
     }
-
-
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -69,12 +63,9 @@ public class LoadOlderList extends ListView implements AbsListView.OnScrollListe
                     // 加载更多
                     iLoadListener.onLoad();
                 }
-
             }
         }
-
     }
-
     public void onScroll(AbsListView view,int firstVisibleItem,int visibleItemCount, int totalItemCount){
         this.lastVisibleItem = firstVisibleItem + visibleItemCount;
         this.totalItemCount = totalItemCount;

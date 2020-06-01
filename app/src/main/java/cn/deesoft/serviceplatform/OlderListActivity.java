@@ -89,6 +89,7 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
     }
 
     private Handler firstPageHandler=new Handler(){
+        //将返回的老人加入老人列表
         ResultInfoList<Object> list=new ResultInfoList<Object>();
         @Override
         public void handleMessage(Message msg){
@@ -102,10 +103,13 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
                         list = mapper.readValue(node.toString(), new TypeReference<ResultInfoList<LinkedHashMap>>() {
                         });
                         for (LinkedHashMap map : (LinkedHashMap[]) list.Data) {
-                            String name = map.get("TrueName").toString();
-                            String birthday = map.get("Birthday").toString();
+                            String name="";
+                            name = map.get("TrueName").toString();
+                            String birthday="";
+                            birthday = map.get("Birthday").toString();
                             birthday = birthday.substring(0, birthday.indexOf("T"));
-                            String identityID=map.get("IdentityID").toString();
+                            String identityID="";
+                            identityID=map.get("IdentityID").toString();
                             String village="";
                             if(map.get("Village")!=(null)){
                             village=map.get("Village").toString();}
@@ -131,9 +135,6 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
             }
         }
     };
-
-
-
     private void initOlders(){//获取第一页数据
         ResultInfoList<Object> list=new ResultInfoList<Object>();
         new Thread() {
@@ -179,8 +180,6 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
         }
         return super.onOptionsItemSelected(item);
     }
-
-
     private void myOnclick() {
 //      加载数据
         listView.setInterface(new LoadOlderList.ILoadListener() {
@@ -192,9 +191,6 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
 
         });
     }
-
-
-
     //搜索框功能
     private void initClick() {
         deleteText.setOnClickListener(new View.OnClickListener() {
@@ -241,10 +237,4 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
             Toast.makeText(this,"请稍等",Toast.LENGTH_LONG).show();
         }
     }
-
-
-
-
-
-
 }

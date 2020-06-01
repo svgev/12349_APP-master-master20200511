@@ -6,8 +6,9 @@ public class UrlData {
     //本地  192.168.1.93
     private static String myIp="http://12349.51youyou.cn";
 
-    private static String urlData ="http://180.153.43.7";
-    private static String localip="http://192.168.1.93";
+    private static Boolean locationServiceStarted=false;
+    private static String urlData ="http://12349.51youyou.cn";
+    private static String localip="http://12349.51youyou.cn";
     public static String getUrl() {
         return localip;
     }
@@ -16,6 +17,11 @@ public class UrlData {
         UrlData.urlData=a;
     }
 
+    public static  Boolean getLocationServiceStarted(){ return locationServiceStarted; }
+    public static void setLocationServiceStarted(Boolean isStarted){UrlData.locationServiceStarted=isStarted;}
 }
+
+
+
 
 

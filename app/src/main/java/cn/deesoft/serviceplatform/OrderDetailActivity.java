@@ -88,6 +88,7 @@ public class OrderDetailActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
     private void initOrder(){
         ResultInfoList<Object> list=new ResultInfoList<Object>();
         new Thread(){

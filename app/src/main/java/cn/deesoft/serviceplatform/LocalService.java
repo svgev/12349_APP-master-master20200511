@@ -72,8 +72,12 @@ public class LocalService extends Service {
     private Timer mTimer;
     static String positionTime="10";
     private SharedPreferences sp;
-
     private ServiceUtil serviceUtil;
+
+    //用于测试线程
+    public int timesOfthread;
+    public int timesOfCreate;
+    public int timeOfLocationChange;
 
     @Nullable
     @Override
@@ -85,6 +89,13 @@ public class LocalService extends Service {
     public void onCreate() {
         super.onCreate();
         intent=new Intent();
+        timesOfthread=1;
+        timesOfCreate=1;
+        timeOfLocationChange=1;
+        UrlData.setLocationServiceStarted(true);
+
+        Log.e("onCreate","服务创建次数:"+timesOfCreate);
+        timesOfCreate++;
         sp=this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
         phoneNumber=sp.getString("phoneNumber", "");
         identityID=sp.getString("identityId","");
@@ -95,6 +106,7 @@ public class LocalService extends Service {
         init();
         //设置前台服务
         setNotification();
+
 
     }
 
@@ -115,14 +127,22 @@ public class LocalService extends Service {
 //            serviceUtil.openGPS(this);
 //        }
 
-        mTimer = new Timer();
-        TimerTask  positionTask = new TimerTask(){
-            @Override
-            public void run() {
+        if(mTimer!=null){
+
+        }else {
+            Log.e("onStartCommand", "服务启动");
+            mTimer = new Timer();
+            TimerTask positionTask = new TimerTask() {
+                @Override
+                public void run() {
+
                     init();
                     mLocationClient.startLocation();
-            }};
-        mTimer.scheduleAtFixedRate(positionTask, 0, 60*1000);
+
+                }
+            };
+            mTimer.scheduleAtFixedRate(positionTask, 0, 60 * 1000);
+        }
         //Toast.makeText(LocalService.this, " 本地服务活了", Toast.LENGTH_SHORT).show();
 
         this.bindService(new Intent(LocalService.this, RomoteService.class), conn, Context.BIND_IMPORTANT);
@@ -133,7 +153,7 @@ public class LocalService extends Service {
         {
             this.startService(new Intent(LocalService.this, RomoteService.class));
         }
-        
+
         AlarmManager systemService = (AlarmManager) getSystemService(ALARM_SERVICE);
         long anHour = 60 * 1000;//这是一个小数的毫秒数
         long l = SystemClock.elapsedRealtime() + anHour;
@@ -142,6 +162,7 @@ public class LocalService extends Service {
         PendingIntent broadcast = PendingIntent.getBroadcast(this, 0, intentBroad, 0);
         systemService.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,l,broadcast);
         return START_STICKY;
+
     }
 
 
@@ -167,6 +188,8 @@ public class LocalService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        UrlData.setLocationServiceStarted(false);
+        Log.e("onDestory","服务销毁");
         NotificationManager mManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         mManager.cancel(1);
         Toast.makeText(this,"service被杀死",Toast.LENGTH_LONG).show();
@@ -211,17 +234,20 @@ public class LocalService extends Service {
         AMapLocationClient.setApiKey("f46f89c09eec35b6e020e491a91d162a");
         //初始化定位
 
+        Log.e("init()","初始化定位");
+        if(mLocationClient!=null){}else{
         mLocationClient = new AMapLocationClient(this);
         initLocationOption();
         mLocationClient.setLocationOption(mLocationOption);
         //设置定位回调监听
-        mLocationClient.setLocationListener(mLocationListener);
+        mLocationClient.setLocationListener(mLocationListener);}
     }
     /**
      * 初始化定位参数
      */
     private void initLocationOption() {
 
+        Log.e("initLocationOption()","初始化定位参数");
         if (null == mLocationOption) {
             mLocationOption = new AMapLocationClientOption();
         }
@@ -255,6 +281,7 @@ public class LocalService extends Service {
              * 如果AMapLocationClient是在当前Activity实例化的，
              * 在Activity的onDestroy中一定要执行AMapLocationClient的onDestroy
              */
+            Log.e("destroyLocation()","销毁定位");
             mLocationClient.onDestroy();
 //            mLocationClient = null;
             mLocationClient = null;
@@ -267,6 +294,8 @@ public class LocalService extends Service {
         @Override
         public void onLocationChanged(AMapLocation aMapLocation){
             //Toast.makeText(LocalService.this, "数据变化", Toast.LENGTH_SHORT).show();
+            Log.e("onLocationChanged()","定位数据变化"+timeOfLocationChange);
+            timeOfLocationChange++;
             if (aMapLocation != null) {
                 if (aMapLocation.getErrorCode() == 0) {
                     LocalService.longitude = aMapLocation.getLongitude();
@@ -286,8 +315,10 @@ public class LocalService extends Service {
 //                    Date date = new Date(aMapLocation.getTime());
 //                    df.format(date);
                     new Thread() {
-                        @Override
-                        public void run() {
+                                @Override
+                                public void run() {
+                                    Log.e("Thread","发送定位线程创建个数："+timesOfthread);
+                            timesOfthread++;
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String content = "\n发送时间:" + df.format(new Date()).toString() + "\n经度：" + longitude;
                             content += "       纬度：" + latitude+"\n 定位方式:"+locationType+"    定位精度:"+accuracy;
@@ -327,6 +358,7 @@ public class LocalService extends Service {
      */
     private void setNotification()
     {
+        Log.e("setNotification","设置前台服务");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             try {
                 NotificationChannel channel = new NotificationChannel("1", "前台服务", NotificationManager.IMPORTANCE_HIGH);

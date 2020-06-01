@@ -98,6 +98,7 @@ public class ServiceObjectActivity extends AppCompatActivity {
                   bundle.putString("Age",listItems.get(position).get("txtAge").toString());
                   bundle.putString("Town",listItems.get(position).get("Town").toString());
                   bundle.putBoolean("IsLiving",Boolean.valueOf(listItems.get(position).get("IsLiving").toString()));
+                  bundle.putString("RemainTime",listItems.get(position).get("RemainTime").toString());
                   if(listItems.get(position).get("photo")!=null) {
                     bundle.putString("Photo",listItems.get(position).get("photo").toString());
                   }
@@ -141,7 +142,7 @@ public class ServiceObjectActivity extends AppCompatActivity {
             Map<String, Object> item = new HashMap<>();
             item.put("ID",map.get("ID").toString());
             item.put("txtName",map.get("TrueName").toString());
-            String birthday=map.get("Birthday").toString();
+            String birthday=map.get("BirthDay").toString();
             birthday=birthday.substring(0,birthday.indexOf("T"));
             int age= DateUtil.getAgeFromBirthTime(birthday);
             item.put("txtAge",age+"");
@@ -149,6 +150,8 @@ public class ServiceObjectActivity extends AppCompatActivity {
             item.put("IsLiving",isLiving);
             item.put("photo",map.get("Photo"));
             item.put("Town",map.get("Town"));
+            item.put("RemainTime",map.get("RemainTime").toString());
+
             listItems.add(item);
           }
           selectObjectListAdapter =new SelectObjectListAdapter(ServiceObjectActivity.this,listItems);
@@ -157,6 +160,7 @@ public class ServiceObjectActivity extends AppCompatActivity {
         }
         catch(Exception ex)
         {
+          ex.printStackTrace();
           Toast.makeText(ServiceObjectActivity.this,"出现未知异常，请联系管理员!！",Toast.LENGTH_LONG).show();
         }
       }

@@ -3,6 +3,7 @@ package cn.deesoft.serviceplatform.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +62,7 @@ public Object getItem(int position) {
             holder.userIcon =  convertView.findViewById(R.id.userIcon);
             holder.txtName =  convertView.findViewById(R.id.txtName);
             holder.txtAge=convertView.findViewById(R.id.txtAge);
+            holder.txtRemainTime=convertView.findViewById(R.id.txtRemainTime);
             convertView.setTag(holder);
         }else {
             holder = (SelectObjectListAdapter.ViewHolder) convertView.getTag();
@@ -89,6 +91,8 @@ public Object getItem(int position) {
         }
         holder.txtName.setText(list.get(position).get("txtName").toString());
         holder.txtAge.setText(list.get(position).get("txtAge").toString()+"岁");
+        holder.txtRemainTime.setText(list.get(position).get("RemainTime").toString());
+        //holder.txtRemainTime.setText(list.get(position).get("txtRemainTime").toString());
         holder.btnService.setOnClickListener(new  View.OnClickListener(){
 
             @Override
@@ -102,6 +106,7 @@ public Object getItem(int position) {
                     bundle.putString("OlderName", list.get(position).get("txtName").toString());
                     bundle.putString("Age",list.get(position).get("txtAge").toString());
                     bundle.putBoolean("IsLiving",Boolean.valueOf(list.get(position).get("IsLiving").toString()));
+                    bundle.putString("RemainTime",list.get(position).get("RemainTime").toString());
                     if(list.get(position).get("photo")!=null) {
                         bundle.putString("Photo",list.get(position).get("photo").toString());
                     }
@@ -119,7 +124,7 @@ public Object getItem(int position) {
         return convertView;
     }
     class ViewHolder{
-        TextView txtName,txtAge;
+        TextView txtName,txtAge,txtRemainTime;
         Button btnService;
         ImageView userIcon;
     }
