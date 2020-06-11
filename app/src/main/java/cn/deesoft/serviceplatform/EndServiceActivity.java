@@ -10,13 +10,16 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.os.Bundle;
 import android.util.Log;
@@ -149,6 +152,7 @@ public class EndServiceActivity extends BaseActivity {
         txtPhoneNumber=findViewById(R.id.txtPhoneNumber);
         txtHealthy=findViewById(R.id.txtHealthy);
         txtIsLiving=findViewById(R.id.txtIsLiving);
+        imgNavigation=findViewById(R.id.imgNavigation);
 
 
         sp=this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
@@ -164,6 +168,25 @@ public class EndServiceActivity extends BaseActivity {
         trueName=bundle.getString("OlderName");
         GetOlderPoint();
 
+        //判断是否已经开启定位服务
+        try {
+            //开始服务
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                //android8.0以上通过startForegroundService启动service
+                if(!UrlData.getLocationServiceStarted()){
+                    startForegroundService(new Intent(this, LocalService.class));
+                    startService(new Intent(this, RomoteService.class));}
+            } else {
+                if(!UrlData.getLocationServiceStarted()) {
+                    startService(new Intent(this, LocalService.class));
+                    startService(new Intent(this, RomoteService.class));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
         if(photoUrl.equals("null"))
         {
                 Glide.with(EndServiceActivity.this).load(R.mipmap.nophoto).into(imgPhoto);
@@ -484,10 +507,11 @@ public class EndServiceActivity extends BaseActivity {
                         olderAddress=map.get("Addr").toString();
                         //Toast.makeText(EndServiceActivity.this, "地址为"+olderAddress, Toast.LENGTH_SHORT).show();
 
-                        if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))){
+                        if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))&&map.get("Latitude").toString()!=null&&map.get("Longitude").toString()!=null){
                             //如果传回有效经纬度，直接标点
-                            dlngX=map.get("Latitude").toString();
-                            dlatY=map.get("Longitude").toString();
+                            dlngX=map.get("Longitude").toString();
+                            dlatY=map.get("Latitude").toString();
+                            imgNavigation.setVisibility(View.VISIBLE);
                             //Toast.makeText(EndServiceActivity.this, "有经纬度", Toast.LENGTH_SHORT).show();
                             if (apkExist) {
                                 //Toast.makeText(EndServiceActivity.this, "检测到高德地图", Toast.LENGTH_SHORT).show();
@@ -507,7 +531,7 @@ public class EndServiceActivity extends BaseActivity {
 
 
                         }
-                        if(map.get("Longitude").toString().equals("0.0")){
+                        if(map.get("Longitude").toString().equals("0.0")&&map.get("Latitude").toString().equals("0.0")){
                             //Toast.makeText(EndServiceActivity.this, "无经纬度", Toast.LENGTH_SHORT).show();
 
                             //没有经纬度的情况

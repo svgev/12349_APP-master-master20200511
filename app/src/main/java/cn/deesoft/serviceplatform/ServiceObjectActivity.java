@@ -151,7 +151,7 @@ public class ServiceObjectActivity extends AppCompatActivity {
             item.put("photo",map.get("Photo"));
             item.put("Town",map.get("Town"));
             item.put("RemainTime",map.get("RemainTime").toString());
-
+            item.put("WorkOrderCount",map.get("WorkOrderCount").toString());
             listItems.add(item);
           }
           selectObjectListAdapter =new SelectObjectListAdapter(ServiceObjectActivity.this,listItems);

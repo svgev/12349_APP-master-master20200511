@@ -447,11 +447,11 @@ public class StartServiceActivity extends AppCompatActivity {
                         olderVillage = map.get("Village").toString();
                         olderAddress=map.get("Addr").toString();
 
-                        if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))){
+                        if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))&&map.get("Latitude").toString()!=null&&map.get("Longitude").toString()!=null){
                             //如果传回有效经纬度，直接标点
                             imgNavigation.setVisibility(View.VISIBLE);
-                            dlngX=map.get("Latitude").toString();
-                            dlatY=map.get("Longitude").toString();
+                            dlngX=map.get("Longitude").toString();
+                            dlatY=map.get("Latitude").toString();
                             //Toast.makeText(StartServiceActivity.this, "有经纬度", Toast.LENGTH_SHORT).show();
 
                             if (apkExist) {
@@ -476,7 +476,6 @@ public class StartServiceActivity extends AppCompatActivity {
                             //没有经纬度的情况
                             if(map.get("Addr")==null){
                                 txtNavigation.setVisibility(View.INVISIBLE);
-                                imgNavigation.setVisibility(View.INVISIBLE);
                                 //Toast.makeText(StartServiceActivity.this, "地址不存在", Toast.LENGTH_SHORT).show();
 
                             }
@@ -504,7 +503,6 @@ public class StartServiceActivity extends AppCompatActivity {
                                             String location = trueAddress.getString("location");
                                             dlngX = location.split(",")[0];
                                             dlatY = location.split(",")[1];
-                                            imgNavigation.setVisibility(View.INVISIBLE);
 //                                            txtNavigation.setOnClickListener(new View.OnClickListener() {
 //                                                @Override
 //                                                public void onClick(View v) {
@@ -522,7 +520,6 @@ public class StartServiceActivity extends AppCompatActivity {
                                 }.start();}
                             else{
                                 txtNavigation.setVisibility(View.INVISIBLE);
-                                imgNavigation.setVisibility(View.INVISIBLE);
                             }
                         }
                     }

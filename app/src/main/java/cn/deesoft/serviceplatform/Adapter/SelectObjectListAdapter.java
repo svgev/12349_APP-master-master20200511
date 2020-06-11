@@ -2,6 +2,7 @@ package cn.deesoft.serviceplatform.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -92,6 +93,11 @@ public Object getItem(int position) {
         holder.txtName.setText(list.get(position).get("txtName").toString());
         holder.txtAge.setText(list.get(position).get("txtAge").toString()+"岁");
         holder.txtRemainTime.setText(list.get(position).get("RemainTime").toString());
+        if(Integer.parseInt( list.get(position).get("WorkOrderCount").toString())>=1){
+            holder.txtName.setTextColor(Color.parseColor("#006fd2"));
+        }else {
+            holder.txtName.setTextColor(Color.parseColor("#4c4c4c"));
+        }
         //holder.txtRemainTime.setText(list.get(position).get("txtRemainTime").toString());
         holder.btnService.setOnClickListener(new  View.OnClickListener(){
 

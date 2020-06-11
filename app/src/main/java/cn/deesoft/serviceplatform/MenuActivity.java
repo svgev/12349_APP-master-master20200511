@@ -126,12 +126,18 @@ public class MenuActivity extends Activity implements View.OnClickListener{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 //android8.0以上通过startForegroundService启动service
                 if(!UrlData.getLocationServiceStarted()){
+                    Log.e("Restart LocationService","重启定位服务");
                 startForegroundService(new Intent(this, LocalService.class));
-                startService(new Intent(this, RomoteService.class));}
+                startService(new Intent(this, RomoteService.class));}else{
+                    Log.e("Already started","检测到已开启定位服务");
+                }
             } else {
                 if(!UrlData.getLocationServiceStarted()) {
+                    Log.e("Restart LocationService","重启定位服务");
                     startService(new Intent(this, LocalService.class));
                     startService(new Intent(this, RomoteService.class));
+                }else{
+                    Log.e("Already started","检测到已开启定位服务");
                 }
             }
         }
