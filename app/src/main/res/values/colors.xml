@@ -15,4 +15,8 @@
     <color name="red">#eb2127</color>
     <color name="white">#ffffff</color>
     <color name="black">#111111</color>
+    <!-- 绿色 -->
+    <color name="green">#008000</color>
+    <!-- 酸橙色 -->
+    <color name="mediumspringgreen">#00FA9A</color>
 </resources>

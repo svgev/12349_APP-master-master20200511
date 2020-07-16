@@ -40,6 +40,7 @@ import java.util.LinkedHashMap;
 
 import Model.ResultInfo;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 
@@ -112,34 +113,42 @@ public class AdminLogActivity extends FragmentActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        String url = UrlData.getUrl()+"/api/Default/AdminLogin?adminName=" + adminName + "&password=" + password;
+                        String url = UrlData.getUrl()+"/api/AndroidApi/AdminLogin?adminName=" + adminName + "&password=" + password;
                         Message msg = new Message();
-                        try {
-                            HttpClient httpClient = new DefaultHttpClient();
-                            HttpGet httpGet = new HttpGet(url);
-                            HttpResponse execute = httpClient.execute(httpGet);
-                            if (execute.getStatusLine().getStatusCode() == 200) {
-                                HttpEntity entity = execute.getEntity();
-                                String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                                msg.what = 1010;
-                                msg.obj = response;
-                                handler.sendMessage(msg);
-                            } else {
-                                msg.what = 113;
-                                handler.sendMessage(msg);
+                        String response;
+                        try{
+                            response= MyConnection.setMyHttpClient(url);
+                            if (response!=null) {
+                                if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                                    msg.what = 2;
+                                    msg.obj = response;//返回错误原因
+                                }
+                                if(response.equals("验证过期")){
+                                    //执行token过期的操作
+                                    msg.what=4;
+                                    msg.obj=response;
+                                    Log.e("验证失败",response);
+                                }
+                                else {
+                                    msg.what = 1;
+                                    msg.obj = response;//返回正常数据
+                                }
+                            }else {
+                                msg.what = 3;
+                                Log.e("else","eeeeee");
                             }
-                        } catch (Exception ex) {
-                            DialogUtil.closeDialog(mWeiboDialog);
-                            msg.what = 113;
-                            handler.sendMessage(msg);
-                            ex.printStackTrace();
                         }
+                        catch (Exception e) {
+                            msg.what = 3;
+                            Log.e("catch","ccccc");
+                            MyConnection.getToken();
+                        }
+                        handler.sendMessage(msg);
                     }
                 }.start();
-
-
             }
         });
+
         helperAdminBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +165,7 @@ public class AdminLogActivity extends FragmentActivity {
         {
             DialogUtil.closeDialog(mWeiboDialog);
             ResultInfo<LinkedHashMap> result=new ResultInfo<>();
-            if(msg.what==1010)
+            if(msg.what==1)
             {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
@@ -201,7 +210,6 @@ public class AdminLogActivity extends FragmentActivity {
                         editor.commit();
                         //跳转界面
                         Intent intent = new Intent(AdminLogActivity.this, AdminAreaActivity.class);
-
                         AdminLogActivity.this.startActivity(intent);
                         finish();
                     }
@@ -215,9 +223,20 @@ public class AdminLogActivity extends FragmentActivity {
                     ex.printStackTrace();
                 }
             }
-            else if(msg.what==113)
+            if(msg.what==2)
             {
-                Toast.makeText(AdminLogActivity.this,"未连接到网络！",Toast.LENGTH_LONG).show();
+                Toast.makeText(AdminLogActivity.this,msg.obj.toString(),Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==3)
+            {
+                Toast.makeText(AdminLogActivity.this,"网络不稳定",Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==4)
+            {
+                Toast.makeText(AdminLogActivity.this,"验证过期",Toast.LENGTH_LONG).show();
+            }
+            else {
+                Toast.makeText(AdminLogActivity.this, "出现未知错误", Toast.LENGTH_LONG).show();
             }
         }
     };

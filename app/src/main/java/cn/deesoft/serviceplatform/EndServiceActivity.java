@@ -38,6 +38,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
 import com.mylhyl.circledialog.CircleDialog;
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -64,7 +65,9 @@ import Util.ActivityManager;
 import Util.DateUtil;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.PhotoUtils;
+import Util.TokenData;
 import Util.UploadUtil;
 import Util.UrlData;
 import cn.deesoft.serviceplatform.Adapter.GridviewAdapter;
@@ -338,14 +341,14 @@ public class EndServiceActivity extends BaseActivity {
                     public void run() {
                         Message msg = new Message();
                         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/photo.jpg");
-                        String url = UrlData.getUrlYy()+"/api/Default/TakePhoto?WorkOrderID=" +ID;
+                        String url = UrlData.getUrlYy()+"/api/AndroidApi/TakePhoto?WorkOrderID=" +ID;
                         if(file!=null) {
                             try {
                                 String re = UploadUtil.uploadFile(new File(compressImage), url);
-                                msg.what = 3;
+                                msg.what = 5;
                                 msg.obj = re;
                             } catch (Exception ex) {
-                                msg.what = 4;
+                                msg.what = 6;
                             }
                             handler.sendMessage(msg);
                         }else {
@@ -400,11 +403,19 @@ public class EndServiceActivity extends BaseActivity {
                     Log.i("result2", ex.getMessage());
                 }
             }
-            else if(msg.what==2)
+            if(msg.what==2)
             {
-                Toast.makeText(EndServiceActivity.this, "结束服务出现异常，请检查网络！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EndServiceActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
             }
-            if (msg.what == 3) {
+            if(msg.what==3)
+            {
+                Toast.makeText(EndServiceActivity.this, "未连接到网络", Toast.LENGTH_SHORT).show();
+            }
+            if(msg.what==4)
+            {
+                Toast.makeText(EndServiceActivity.this, "验证过期", Toast.LENGTH_SHORT).show();
+            }
+            if (msg.what == 5) {
                 try {
                     String result = msg.obj.toString();
                     ObjectMapper mapper = new ObjectMapper();
@@ -428,7 +439,7 @@ public class EndServiceActivity extends BaseActivity {
                     Log.i("result2", ex.getMessage());
                 }
             }
-            else if(msg.what==4)
+            else if(msg.what==6)
             {
                 Toast.makeText(EndServiceActivity.this, "上传照片出现异常，请检查网络！", Toast.LENGTH_SHORT).show();
             }
@@ -460,22 +471,25 @@ public class EndServiceActivity extends BaseActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-                String url = UrlData.getUrlYy() + "/api/Default/GetOlderById?olderId="+olderId;
+                String url = UrlData.getUrlYy() + "/api/AndroidApi/GetOlderById?olderId="+olderId;
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpGet httpGet = new HttpGet(url);
+                    httpGet.addHeader("auth", TokenData.getTokenValue());
                     HttpResponse execute = httpClient.execute(httpGet);
                     if (execute.getStatusLine().getStatusCode() == 200) {
                         HttpEntity entity = execute.getEntity();
                         String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 5;
+                        msg.what = 7;
                         msg.obj = response;
                         pointHandler.sendMessage(msg);
                     } else {
-                        msg.what = 6;
+                        msg.what = 8;
                         pointHandler.sendMessage(msg);
                     }
                 } catch (Exception ex) {
+                    msg.what = 8;
+                    pointHandler.sendMessage(msg);
                     DialogUtil.closeDialog(mWeiboDialog);
                 }
             }
@@ -492,7 +506,7 @@ public class EndServiceActivity extends BaseActivity {
         {
             DialogUtil.closeDialog(mWeiboDialog);
             Model.ResultInfo<LinkedHashMap> list=new Model.ResultInfo<LinkedHashMap>();
-            if(msg.what==5)
+            if(msg.what==7)
             {
                 try {
                     DialogUtil.closeDialog(mWeiboDialog);
@@ -501,7 +515,6 @@ public class EndServiceActivity extends BaseActivity {
                     pointList = mapper.readValue(node.toString(), new TypeReference<ResultInfoList<LinkedHashMap>>() {
                     });
                     for (LinkedHashMap map : (LinkedHashMap[]) pointList.Data) {
-
                         olderTown = map.get("Town").toString();
                         olderVillage = map.get("Village").toString();
                         olderAddress=map.get("Addr").toString();
@@ -658,29 +671,55 @@ public class EndServiceActivity extends BaseActivity {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case AlertDialog.BUTTON_POSITIVE:// "确认"按钮退出程序
-                    clickTimes=clickTimes+1;
+//                    clickTimes=clickTimes+1;
                     if (HttpUtil.isFastClick()) {
                         mWeiboDialog = DialogUtil.createLoadingDialog(EndServiceActivity.this, "加载中...");
                         new Thread() {
                             @Override
                             public void run() {
                                 Message msg = new Message();
-                                String url = UrlData.getUrlYy()+ "/api/Default/EndService?WorkOrderID=" +ID+"&Content="+result+"&phoneNumber="+sp.getString("phoneNumber", "")+
+                                String response="";
+                                String url = UrlData.getUrlYy()+ "/api/AndroidApi/EndService?WorkOrderID=" +ID+"&Content="+result+"&phoneNumber="+sp.getString("phoneNumber", "")+
                                         "&oldPeoplePhoneNumber="+txtPhoneNumber.getText().toString()+"&healthy="+txtHealthy.getText().toString();
                                 String urlMy = UrlData.getUrlYy()+ "/api/Default/EndService?beEnded=true&WorkOrderID=" +ID+"&Content="+result+"&phoneNumber="+sp.getString("phoneNumber", "")+
                                         "&oldPeoplePhoneNumber="+txtPhoneNumber.getText().toString()+"&healthy="+txtHealthy.getText().toString();
                                 try {
                                     HttpClient httpClient = new DefaultHttpClient();
                                     HttpPost httpPost = new HttpPost(url);
+                                    httpPost.addHeader("auth",TokenData.getTokenValue());
                                     HttpResponse execute = httpClient.execute(httpPost);
-                                    if (execute.getStatusLine().getStatusCode() == 200||clickTimes>3) {
+                                    Header[] headers= execute.getAllHeaders();
+                                    if (execute.getStatusLine().getStatusCode() == 200) {
                                         HttpEntity entity = execute.getEntity();
-                                        String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
+                                        response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
                                         msg.what = 1;
                                         msg.obj = response;
                                     }
+                                    else {
+                                        if (execute.getStatusLine().getStatusCode() == 400)response="请求错误";
+                                        if (execute.getStatusLine().getStatusCode() == 401)response="未授权";
+                                        if (execute.getStatusLine().getStatusCode() == 403)response="禁止访问";
+                                        if (execute.getStatusLine().getStatusCode() == 404)response="文件未找到";
+                                        else response="未知错误";
+                                        msg.what=2;
+                                        msg.obj=response;
+                                    }
+                                    for (int i = 0; i <headers.length; i++) {
+                                        //如果token过期Headers里会有名为"token-expire"的Header 如果没有就排除token过期的可能
+                                        String name = headers[i].getName();
+                                        String value = headers[i].getValue();
+
+                                        Log.e("Header",name+":"+value);
+                                        if(name.equals("token-expire")&&value.equals("true")){
+                                            response="验证过期";
+                                            msg.what=4;
+                                            msg.obj=response;
+                                            Log.e("返回","验证过期");
+                                            break;
+                                        }
+                                    }
                                 } catch (Exception ex) {
-                                    msg.what = 2;
+                                    msg.what = 3;
                                 }
                                 handler.sendMessage(msg);
                             }

@@ -15,6 +15,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.amap.api.maps.InfoWindowAnimationManager;
+
+import org.apache.http.impl.auth.win.WindowsCredentialsProvider;
+
 public class WelcomeActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,7 +82,6 @@ public class WelcomeActivity extends Activity {
         }
 
     }
-
     //设置状态栏透明
     private void changeStatusBarColor(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -87,9 +90,4 @@ public class WelcomeActivity extends Activity {
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
-
-
-
-
-
 }

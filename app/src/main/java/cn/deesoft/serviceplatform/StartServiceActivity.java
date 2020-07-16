@@ -42,6 +42,7 @@ import Model.ResultInfoList;
 import Util.ActivityManager;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.UrlData;
 import cn.deesoft.serviceplatform.Adapter.GridviewAdapter;
 
@@ -193,28 +194,37 @@ public class StartServiceActivity extends AppCompatActivity {
         new Thread() {
             @Override
             public void run() {
-                String url = UrlData.getUrlYy()+"/api/Default/GetService";
+                String url = UrlData.getUrlYy()+"/api/AndroidApi/GetService";
                 Message msg = new Message();
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                        msg.what = 2;
-                        msg.obj = response;
-                        handler.sendMessage(msg);
-                    }
-                    else
-                    {
+                String response;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                            Log.e("GetHelperInfo",response+"msg.what=2");
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("GetHelperInfo","验证过期");
+                        }
+                        else {
+                            msg.what = 5;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
                         msg.what = 3;
-                        handler.sendMessage(msg);
+                        Log.e("GetHelperInfo","未连接网络");
                     }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
-                    ex.printStackTrace();
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                    Log.e("GetHelperInfo","未连接网络");
+                }
+                handler.sendMessage(msg);
             }
         }.start();
         gridView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -268,39 +278,47 @@ public class StartServiceActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             Message msg = new Message();
-                            if(clickTimes==4){
-                                beStarted="true";
-                                clickTimes=0;
-                            }else{
-                                beStarted="false";
-                            }
-                            String url = UrlData.getUrlYy()+"/api/Default/StartService?identityID=" + sp.getString("identityId", "")+
+//                            if(clickTimes==4){
+//                                beStarted="true";
+//                                clickTimes=0;
+//                            }else{
+//                                beStarted="false";
+//                            }
+                            String response;
+                            String url = UrlData.getUrlYy()+"/api/AndroidApi/StartService?identityID=" + sp.getString("identityId", "")+
                                     "&phoneNumber="+sp.getString("phoneNumber", "")+ "&oldPeopleID=" + OlderID + "&serviceID=" +
                                     ServiceID + "&serviceName=" + ServiceName+"&content="+result+"&town="+Town;
                             String urlMy = UrlData.getUrlYy()+"/api/Default/StartService?beStarted="+beStarted+"&identityID=" + sp.getString("identityId", "")+
                                     "&phoneNumber="+sp.getString("phoneNumber", "")+ "&oldPeopleID=" + OlderID + "&serviceID=" +
                                     ServiceID + "&serviceName=" + ServiceName+"&content="+result+"&town="+Town;
-                            try {
-                                HttpClient httpClient = new DefaultHttpClient();
-                                HttpGet httpGet = new HttpGet(url);
-                                HttpResponse execute = httpClient.execute(httpGet);
-                                if (execute.getStatusLine().getStatusCode() == 200||clickTimes>3) {
-                                    HttpEntity entity = execute.getEntity();
-                                    String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                                    msg.what = 101;
-                                    msg.obj = response;
-                                    handler.sendMessage(msg);
-                                    beStarted="false";
-                                } else {
+                            try{
+                                response= MyConnection.setMyHttpClient(url);
+                                if (response!=null) {
+                                    if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                                        msg.what = 2;
+                                        msg.obj = response;//返回错误原因
+                                        Log.e("GetHelperInfo",response);
+                                    }
+                                    if(response.equals("验证过期")){
+                                        //执行token过期的操作
+                                        msg.what=4;
+                                        msg.obj=response;
+                                        Log.e("GetHelperInfo","验证过期");
+                                    }
+                                    else {
+                                        msg.what = 1;
+                                        msg.obj = response;//返回正常数据
+                                    }
+                                }else {
                                     msg.what = 3;
-                                    handler.sendMessage(msg);
-                                    beStarted="false";
+                                    Log.e("GetHelperInfo","未连接网络");
                                 }
-                            } catch (Exception ex) {
-                                DialogUtil.closeDialog(mWeiboDialog);
-                                ex.printStackTrace();
-                                beStarted="false";
                             }
+                            catch (Exception e) {
+                                msg.what = 3;
+                                Log.e("GetHelperInfo","未连接网络");
+                            }
+                            handler.sendMessage(msg);
                         }
                     }.start();
                 }
@@ -332,25 +350,25 @@ public class StartServiceActivity extends AppCompatActivity {
         {
             DialogUtil.closeDialog(mWeiboDialog);
             Model.ResultInfo<LinkedHashMap> list=new Model.ResultInfo<LinkedHashMap>();
-            if(msg.what==101)
-            {
+            if(msg.what==1)
+            {//判断是否开始服务成功 如果成功 设置hasStarted=true 并跳转Menu界面
                 Intent intent=new Intent();
                 intent.setClass(StartServiceActivity.this,MenuActivity.class);
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     JsonNode node=mapper.readTree(msg.obj.toString());
                     list= mapper.readValue(node.toString(),list.getClass());
-                    if(list.Success==true||clickTimes>3)
+                    if(list.Success==true)
                     {
                         Toast.makeText(StartServiceActivity.this,"开始服务成功",Toast.LENGTH_LONG).show();
-                        intent.putExtra("clickTimes",clickTimes);
+//                        intent.putExtra("clickTimes",clickTimes);
                         hasStarted=true;
                         startActivity(intent);
                         ActivityManager.getInstance().exit();
-                        clickTimes=0;
+
                     }
                     else
-                    {
+                    {//服务开始的请求不成功 弹出Toast提示
                         if(list.Msg.equals("没有定位信息")) {
                             new CircleDialog.Builder()
                                     .setTitle("提示")
@@ -366,10 +384,11 @@ public class StartServiceActivity extends AppCompatActivity {
                 }
                 catch(Exception ex)
                 {
+                    ex.printStackTrace();
                     Toast.makeText(StartServiceActivity.this,"出现未知异常，请联系管理员!",Toast.LENGTH_LONG).show();
                 }
             }
-            else if(msg.what==2)
+            if(msg.what==5)
             {
                 try{
                     ObjectMapper mapper=new ObjectMapper();
@@ -379,15 +398,24 @@ public class StartServiceActivity extends AppCompatActivity {
                 }
                 catch(Exception ex)
                 {
-                    Toast.makeText(StartServiceActivity.this,"出现未知异常，请联系管理员!！",Toast.LENGTH_LONG).show();
-
+                    Toast.makeText(StartServiceActivity.this,"出现未知异常，请联系管理员!！"+"msg.what=5",Toast.LENGTH_LONG).show();
                 }
+            }
+            if(msg.what==4){
+                //执行token过期操作
+                Toast.makeText(StartServiceActivity.this,"验证过期",Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==3){
+            Toast.makeText(StartServiceActivity.this,"未连接到网络",Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==2){
+                Toast.makeText(StartServiceActivity.this,msg.obj.toString(),Toast.LENGTH_LONG).show();
             }
             else
             {
-                Toast.makeText(StartServiceActivity.this,"出现未知异常，请联系管理员!",Toast.LENGTH_LONG).show();
+                Log.e("else未知错误",msg.obj.toString());
+//                Toast.makeText(StartServiceActivity.this,"出现未知异常，请联系管理员!"+"msg未知",Toast.LENGTH_LONG).show();
             }
-
 
         }
     };
@@ -401,25 +429,36 @@ public class StartServiceActivity extends AppCompatActivity {
             public void run() {
                 Message msg = new Message();
                 String ID=OlderID;
-
-                String url = UrlData.getUrlYy() + "/api/Default/GetOlderById?olderId="+ID;
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 5;
-                        msg.obj = response;
-                        pointHandler.sendMessage(msg);
-                    } else {
-                        msg.what = 6;
-                        pointHandler.sendMessage(msg);
+                String response;
+                String url = UrlData.getUrlYy() + "/api/AndroidApi/GetOlderById?olderId="+ID;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                            Log.e("GetOlderById",response);
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("GetOlderById","验证过期");
+                        }
+                        else {
+                            msg.what = 6;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
+                        Log.e("GetOlderById","未连接网络");
                     }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                    Log.e("GetOlderById","未连接网络");
+                }
+                pointHandler.sendMessage(msg);
             }
         }.start();
     }
@@ -433,7 +472,7 @@ public class StartServiceActivity extends AppCompatActivity {
         {
             DialogUtil.closeDialog(mWeiboDialog);
             Model.ResultInfo<LinkedHashMap> list=new Model.ResultInfo<LinkedHashMap>();
-            if(msg.what==5)
+            if(msg.what==6)
             {
                 try {
                     DialogUtil.closeDialog(mWeiboDialog);

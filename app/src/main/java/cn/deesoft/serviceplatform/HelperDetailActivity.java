@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +41,7 @@ import java.util.LinkedHashMap;
 import Model.Helper;
 import Model.ResultInfoList;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 public class HelperDetailActivity extends AppCompatActivity {
@@ -107,12 +109,7 @@ public class HelperDetailActivity extends AppCompatActivity {
         aMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(30.542507, 119.977412), 13));
         latLng = new LatLng(30.542507, 119.977412);
 
-
-
         editButton=findViewById(R.id.edit_button);
-
-
-
         initHelper();
 
         /*
@@ -159,25 +156,33 @@ public class HelperDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-
-                String url = UrlData.getUrl() + "/api/Default/GetHelperById?helperId=" + ID;
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 1;
-                        msg.obj = response;
-                        handler.sendMessage(msg);
-                    } else {
-                        msg.what = 2;
-                        handler.sendMessage(msg);
+                String response;
+                String url = UrlData.getUrl() + "/api/AndroidApi/GetHelperById?helperId=" + ID;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("验证失败",response);
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
                     }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                }
+                handler.sendMessage(msg);
             }
         }.start();
         handler.sendEmptyMessageDelayed(1, 100);
@@ -250,6 +255,17 @@ public class HelperDetailActivity extends AppCompatActivity {
                         }
                     } catch (Exception ex) {
                     }
+                    break;
+                case 2:
+                    Toast.makeText(HelperDetailActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    break;
+                case 3:
+                    Toast.makeText(HelperDetailActivity.this,"未连接到网络",Toast.LENGTH_LONG);
+                    break;
+                case 4:
+                    Toast.makeText(HelperDetailActivity.this,"验证过期",Toast.LENGTH_LONG);
+                    Log.e("sssssss","ssssss");
+                    break;
 
             }
         }

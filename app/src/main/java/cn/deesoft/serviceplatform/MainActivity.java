@@ -30,11 +30,15 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 
 import Model.ResultInfo;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 
@@ -62,12 +66,11 @@ import Util.UrlData;
         etPhoneNumber=findViewById(R.id.txtPhoneNumber);
         btnBind=findViewById(R.id.btnBind);
         btnAdminLog=findViewById(R.id.adminLoginTxt);
-
+//        MyConnection.getToken();
         initEvent();
         try {
             sp = this.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
             spAdmin=this.getSharedPreferences("adminInfo", Context.MODE_PRIVATE);
-
         }
         catch (Exception ex)
         {
@@ -98,28 +101,36 @@ import Util.UrlData;
                     new Thread() {
                         @Override
                         public void run() {
-                            String url = UrlData.getUrlYy()+"/api/Default/Login?phoneNumber=" + phoneNumber + "&IdentityID=" + IdentityId;
+                            String url = UrlData.getUrlYy()+"/api/AndroidApi/Login?phoneNumber=" + phoneNumber + "&IdentityID=" + IdentityId;
                             Message msg = new Message();
-                            try {
-                                HttpClient httpClient = new DefaultHttpClient();
-                                HttpGet httpGet = new HttpGet(url);
-                                HttpResponse execute = httpClient.execute(httpGet);
-                                if (execute.getStatusLine().getStatusCode() == 200) {
-                                    HttpEntity entity = execute.getEntity();
-                                    String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                                    msg.what = 1;
-                                    msg.obj = response;
-                                    handler.sendMessage(msg);
-                                } else {
+                            String response;
+                            try{
+                                response= MyConnection.setMyHttpClient(url);
+                                if (response!=null) {
+                                    if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                                        msg.what = 2;
+                                        msg.obj = response;//返回错误原因
+                                    }
+                                    if(response.equals("验证过期")){
+                                        //执行token过期的操作
+                                        msg.what=4;
+                                        msg.obj=response;
+                                        Log.e("验证失败",response);
+                                    }
+                                    else {
+                                        msg.what = 1;
+                                        msg.obj = response;//返回正常数据
+                                    }
+                                }else {
                                     msg.what = 3;
-                                    handler.sendMessage(msg);
+                                    msg.obj="未连接到网络";
                                 }
-                            } catch (Exception ex) {
-                                DialogUtil.closeDialog(mWeiboDialog);
-                                msg.what = 3;
-                                handler.sendMessage(msg);
-                                ex.printStackTrace();
                             }
+                            catch (Exception e) {
+                                msg.what = 3;
+                                msg.obj="未连接到网络";
+                            }
+                            handler.sendMessage(msg);
                         }
                     }.start();
 
@@ -159,7 +170,6 @@ import Util.UrlData;
                     if(result.Success==true)
                     {
                         Toast.makeText(MainActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-
                         AutoLogin=true;
                         //记住用户名、密码、
                         SharedPreferences.Editor editor = sp.edit();
@@ -188,11 +198,15 @@ import Util.UrlData;
                     ex.printStackTrace();
                 }
             }
-            else if(msg.what==3)
+            if(msg.what==2||msg.what==3)
             {
-
-                Toast.makeText(MainActivity.this,"未连接到网络！",Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
             }
+            if(msg.what==4)
+            {//验证过期
+            Toast.makeText(MainActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+            }
+
         }
     };
 

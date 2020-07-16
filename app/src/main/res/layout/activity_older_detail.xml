@@ -87,7 +87,7 @@
                                         android:layout_marginLeft="2dp"
                                         android:layout_marginTop="0dp"
                                         android:text="年龄："
-                                        android:textSize="16sp"
+                                        android:textSize="15sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -98,15 +98,72 @@
                                         android:layout_marginTop="0dp"
                                         android:text="(在世)"
                                         android:textColor="#9f9f9f"
-                                        android:textSize="16sp"
+                                        android:textSize="15sp"
                                         android:textStyle="bold"
                                         android:visibility="gone" />
                                 </LinearLayout>
+                                <RelativeLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginTop="0dp">
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginTop="0dp">
+
+                                <TextView
+                                    android:id="@+id/txtBeServiced"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="1dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:text="享受服务 "
+                                    android:textColor="#DB9F6E"
+                                    android:textStyle="bold"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/txtState"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="0dp"
+                                    android:layout_marginTop="1dp"
+                                    android:textStyle="bold"
+                                    android:textColor="#999898"
+                                    android:text=""
+                                    android:textSize="14sp" />
+
+                                </LinearLayout>
+                                </RelativeLayout>
                                 <!--老人编号-->
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="4dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginTop="1dp"
+                                        android:textColor="#ffffff"
+                                        android:background="#999898"
+                                        android:text="  基本信息  "
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="1dp"
+                                    android:background="#999898"
+                                    android:layout_marginTop="0dp">
+                                </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="15dp">
+                                    android:layout_marginTop="6dp">
                                 <RelativeLayout
                                     android:layout_width="280dp"
                                     android:layout_height="wrap_content">
@@ -116,18 +173,21 @@
                                         android:layout_marginTop="3dp"
                                         android:text="编号："
                                         android:textStyle="bold"
-                                        android:textSize="17sp" />
-                                <TextView
-                                    android:id="@+id/txtNumber"
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:layout_marginLeft="47dp"
-                                    android:text=""
-                                    android:textSize="17sp" /></RelativeLayout>
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/txtNumber"
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="43dp"
+                                        android:layout_marginTop="3dp"
+                                        android:text=""
+                                        android:textSize="16sp" />
+                                </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="280dp"
                                     android:layout_height="wrap_content">
+
                                     <TextView
                                         android:layout_width="280dp"
                                         android:layout_height="wrap_content"
@@ -135,42 +195,44 @@
                                         android:text="性别："
                                         android:textStyle="bold"
                                         android:layout_marginLeft="145dp"
-                                        android:textSize="17sp" />
+                                        android:textSize="16sp" />
                                    <TextView
                                         android:id="@+id/txtSex"
                                         android:layout_width="280dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="3dp"
                                         android:text=""
-                                        android:layout_marginLeft="192dp"
-                                        android:textSize="17sp" /></RelativeLayout>
+                                        android:layout_marginLeft="188dp"
+                                        android:textSize="16sp" /></RelativeLayout>
                                 </RelativeLayout>
 
                                 <RelativeLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
                                  >
 
                                     <RelativeLayout
                                         android:layout_width="280dp"
-                                        android:layout_height="wrap_content">
+                                        android:layout_height="wrap_content"
+                                        >
 
                                         <TextView
                                             android:layout_width="280dp"
                                             android:layout_height="wrap_content"
                                             android:layout_marginTop="3dp"
                                             android:text="乡镇："
-                                            android:textSize="17sp"
+                                            android:textSize="16sp"
                                             android:textStyle="bold" />
 
                                         <TextView
                                             android:id="@+id/txtTown"
                                             android:layout_width="280dp"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginLeft="47dp"
+                                            android:layout_marginLeft="43dp"
                                             android:layout_marginTop="3dp"
                                             android:text=""
-                                            android:textSize="17sp" />
+                                            android:textSize="16sp" />
                                     </RelativeLayout>
 
                                     <RelativeLayout
@@ -183,48 +245,50 @@
                                             android:layout_marginLeft="145dp"
                                             android:layout_marginTop="3dp"
                                             android:text="街道："
-                                            android:textSize="17sp"
+                                            android:textSize="16sp"
                                             android:textStyle="bold" />
 
                                         <TextView
                                             android:id="@+id/txtVillage"
                                             android:layout_width="280dp"
                                             android:layout_height="wrap_content"
-                                            android:layout_marginLeft="192dp"
+                                            android:layout_marginLeft="188dp"
                                             android:layout_marginTop="3dp"
                                             android:text=""
-                                            android:textSize="17sp" />
+                                            android:textSize="16sp" />
                                     </RelativeLayout>
                                 </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp">
                                     <TextView
                                         android:layout_width="280dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="3dp"
-                                        android:text="联系电话："
+                                        android:text="手机："
                                         android:textStyle="bold"
-                                        android:textSize="17sp" />
+                                        android:textSize="16sp" />
                                     <TextView
                                         android:id="@+id/txtMobile"
                                         android:layout_width="280dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="3dp"
                                         android:text=""
-                                        android:layout_marginLeft="83dp"
-                                        android:textSize="17sp" /></RelativeLayout>
+                                        android:layout_marginLeft="43dp"
+                                        android:textSize="16sp" /></RelativeLayout>
                                 <!--老人身份证号-->
                                 <RelativeLayout
                                     android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp">
 
                                     <TextView
                                         android:layout_width="280dp"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="3dp"
-                                        android:text="身份证号："
-                                        android:textSize="17sp"
+                                        android:text="证件："
+                                        android:textSize="16sp"
                                         android:textStyle="bold" />
 
                                     <TextView
@@ -233,8 +297,220 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="3dp"
                                         android:text=""
-                                        android:layout_marginLeft="83dp"
-                                        android:textSize="17sp" /></RelativeLayout>
+                                        android:layout_marginLeft="43dp"
+                                        android:textSize="16sp" /></RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp"
+                                    >
+                                    <TextView
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="住址："
+                                        android:textStyle="bold"
+                                        android:textSize="16sp" />
+
+                                    <TextView
+                                        android:id="@+id/txtAddress"
+                                        android:layout_width="235dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="43dp"
+                                        android:layout_marginTop="3dp"
+                                        android:text="浙江省湖州市德清县武康镇中兴北路中兴北路中兴北路1088号镇中兴北路中兴北路中兴北路1088号"
+                                        android:textColor="#317D6D"
+                                        android:textSize="16sp" />
+
+                                </RelativeLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginTop="1dp"
+                                        android:textColor="#ffffff"
+                                        android:background="#999898"
+                                        android:text="  位置信息  "
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="1dp"
+                                    android:background="#999898"
+                                    android:layout_marginTop="0dp">
+                                </RelativeLayout>
+
+
+                                <LinearLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="53dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="坐标："
+                                        android:textSize="16sp"
+                                        android:textStyle="bold" />
+
+                                    <LinearLayout
+                                        android:layout_width="227dp"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <TextView
+                                            android:id="@+id/txtLongitude"
+                                            android:layout_width="105dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="0dp"
+                                            android:layout_marginTop="3dp"
+                                            android:text=" lng-0.0"
+                                            android:background="#ECEBEB"
+                                            android:textSize="16sp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="3dp"
+                                            android:layout_marginLeft="0dp"
+                                            android:text=" "
+                                            android:textSize="16sp" />
+                                        <TextView
+                                            android:id="@+id/txtLatitude"
+                                            android:layout_width="105dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="4dp"
+                                            android:layout_marginTop="3dp"
+                                            android:background="#ECEBEB"
+                                            android:text=" lat-0.0"
+                                            android:textSize="16sp" />
+                                    </LinearLayout>
+
+
+
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="10dp">
+
+                                    <TextView
+                                        android:id="@+id/btnLocation"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginTop="2dp"
+                                        android:text="   设置坐标   "
+                                        android:padding="10px"
+                                        android:background="@drawable/location_edit_background"
+                                        android:textColor="#ffffff"
+                                        android:textSize="15sp" />
+                                    <ImageView
+                                        android:id="@+id/imgNavigation"
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginLeft="2dp"
+                                        android:layout_marginTop="3dp"
+                                        android:visibility="invisible"
+                                        android:background="@mipmap/navigation3"
+                                        android:scaleType="fitXY" />
+                                </LinearLayout>
+
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="14dp">
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="0dp"
+                                        android:layout_marginTop="1dp"
+                                        android:textColor="#ffffff"
+                                        android:background="#999898"
+                                        android:text="  其它信息  "
+                                        android:textSize="14sp" />
+
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="1dp"
+                                    android:background="#999898"
+                                    android:layout_marginTop="0dp">
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="6dp">
+                                    <TextView
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="联系人："
+                                        android:textStyle="bold"
+                                        android:textSize="16sp" />
+                                    <TextView
+                                        android:id="@+id/txtContact"
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="  /"
+                                        android:layout_marginLeft="60dp"
+                                        android:textSize="16sp" /></RelativeLayout>
+
+
+
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    >
+                                    <TextView
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="联系人电话："
+                                        android:textStyle="bold"
+                                        android:textSize="16sp" />
+                                    <TextView
+                                        android:id="@+id/txtContactMobile"
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="  /"
+                                        android:layout_marginLeft="92dp"
+                                        android:textSize="16sp" />
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:layout_width="280dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp">
+                                    <TextView
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="疾病历史："
+                                        android:textStyle="bold"
+                                        android:textSize="16sp" />
+                                    <TextView
+                                        android:id="@+id/txtDiseaseHistory"
+                                        android:layout_width="280dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="3dp"
+                                        android:text="  /"
+                                        android:layout_marginLeft="77dp"
+                                        android:textSize="16sp" /></RelativeLayout>
+
 
                                 <!--老人所在乡镇-->
 
@@ -247,135 +523,17 @@
 
                                 </RelativeLayout>
                                 <!--老人地址-->
-                                <RelativeLayout
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
-                                    <TextView
-                                        android:layout_width="280dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
-                                        android:text="住址："
-                                        android:textStyle="bold"
-                                        android:textSize="17sp" />
 
-                                    <TextView
-                                        android:id="@+id/txtAddress"
-                                        android:layout_width="235dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginLeft="51dp"
-                                        android:layout_marginTop="3dp"
-                                        android:text="浙江省湖州市德清县武康镇中兴北路中兴北路中兴北路1088号镇中兴北路中兴北路中兴北路1088号"
-                                        android:textColor="#317D6D"
-                                        android:textSize="17sp" />
 
-                                </RelativeLayout>
-                                <LinearLayout
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
-                                        android:text="坐标："
-                                        android:textSize="17sp"
-                                        android:textStyle="bold" />
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-                                    <TextView
-                                        android:id="@+id/txtLongitude"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
-                                        android:layout_marginLeft="0dp"
-                                        android:text="Long 0.0"
-                                        android:textSize="17sp" />
-                                        <TextView
-                                            android:id="@+id/txtLatitude"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:layout_marginTop="3dp"
-                                            android:layout_marginLeft="0dp"
-                                            android:text="Lat 0.0"
-                                            android:textSize="17sp" />
-
-                                    </LinearLayout>
-                                </LinearLayout>
                                 <Button
-                                    android:padding="0dp"
-                                    android:id="@+id/btnLocation"
-                                    android:layout_width="wrap_content"
+                                    android:id="@+id/btnEditInfo"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginLeft="45dp"
-                                    android:text="重新定位"
-                                    android:textColor="#317D6D"
-                                    android:textSize="14sp" />
-
-
-
-
-
-
-
-                                <RelativeLayout
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
-                                <TextView
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:text="家属姓名："
-                                    android:textStyle="bold"
-                                    android:textSize="17sp" />
-                                <TextView
-                                    android:id="@+id/txtContact"
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:text=""
-                                    android:layout_marginLeft="83dp"
-                                    android:textSize="17sp" /></RelativeLayout>
-
-                                <RelativeLayout
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
-                                <TextView
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:text="家属电话："
-                                    android:textStyle="bold"
-                                    android:textSize="17sp" />
-                                <TextView
-                                    android:id="@+id/txtContactMobile"
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:text=""
-                                    android:layout_marginLeft="83dp"
-                                    android:textSize="17sp" /></RelativeLayout>
-                                <RelativeLayout
-                                    android:layout_width="280dp"
-                                    android:layout_height="wrap_content">
-                                    <TextView
-                                        android:layout_width="280dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
-                                        android:text="疾病历史："
-                                        android:textStyle="bold"
-                                        android:textSize="17sp" />
-                                    <TextView
-                                        android:id="@+id/txtDiseaseHistory"
-                                        android:layout_width="280dp"
-                                        android:layout_height="wrap_content"
-                                        android:layout_marginTop="3dp"
-                                        android:text=""
-                                        android:layout_marginLeft="83dp"
-                                        android:textSize="17sp" /></RelativeLayout>
-
+                                    android:layout_marginTop="12dp"
+                                    android:text="修改信息"
+                                    android:textSize="15sp"
+                                    android:textColor="#317D6D" />
 
                                 <TextView
                                     android:layout_width="match_parent"

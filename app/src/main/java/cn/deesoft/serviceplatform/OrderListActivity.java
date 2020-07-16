@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -33,6 +34,7 @@ import java.util.List;
 import Model.Order;
 import Model.ResultInfoList;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 import cn.deesoft.serviceplatform.Adapter.OrderAdapter;
 import cn.deesoft.serviceplatform.R;
@@ -151,6 +153,16 @@ public class OrderListActivity extends AppCompatActivity implements AdapterView.
                     orderAdapter.notifyDataSetChanged();
                     listView.loadComplete();
                     break;
+                case 2:
+                    Toast.makeText(OrderListActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    break;
+                case 3:
+                    Toast.makeText(OrderListActivity.this,"未连接到网络",Toast.LENGTH_LONG);
+                    break;
+                case 4:
+                    Toast.makeText(OrderListActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    Log.e("sssssss","ssssss");
+                    break;
 
 //          通知适配器数据已经改变
 
@@ -168,25 +180,33 @@ public class OrderListActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void run() {
                 Message msg = new Message();
-
-                String url = UrlData.getUrl() + "/api/Default/GetWorkOrderList?pageNum=" + pageNum + "&status="+billingstatus+"&town="+town+"&key="+key;
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 1;
-                        msg.obj = response;
-                        firstPageHandler.sendMessage(msg);
-                    } else {
-                        msg.what = 2;
-                        firstPageHandler.sendMessage(msg);
+                String response="";
+                String url = UrlData.getUrl() + "/api/AndroidApi/GetWorkOrderList?pageNum=" + pageNum + "&status="+billingstatus+"&town="+town+"&key="+key;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("验证失败",response);
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
                     }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                }
+                firstPageHandler.sendMessage(msg);
             }
         }.start();
         firstPageHandler.sendEmptyMessageDelayed(1, 100);

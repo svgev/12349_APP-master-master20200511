@@ -25,6 +25,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import Util.MyConnection;
+import Util.TokenData;
 import cn.deesoft.serviceplatform.ServiceObjectActivity;
 
 
@@ -69,7 +72,6 @@ public class MenuActivity extends Activity implements View.OnClickListener{
     private Dialog mWeiboDialog;
     private ImageView imgPhoto;
     private DownloadBuilder builder;
-    private int clickTimes;
 
     private double percentVisionCode;
     private String txtServiceButton;
@@ -99,7 +101,7 @@ public class MenuActivity extends Activity implements View.OnClickListener{
 
         //util类，存下当前页面，便于销毁
         ActivityManager.getInstance().addActivity(this);
-        clickTimes=0;
+
 
         //控件初始化
         btnService = findViewById(R.id.btnService);
@@ -170,8 +172,6 @@ public class MenuActivity extends Activity implements View.OnClickListener{
             intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivityForResult(intent, 1315);
         }
-
-
         btnService.setOnClickListener(this);
         imgPhoto.setOnClickListener(this);
         btnWorkOrder.setOnClickListener(this);
@@ -212,25 +212,36 @@ public class MenuActivity extends Activity implements View.OnClickListener{
                         @Override
                         public void run() {
                             Message msg = new Message();
-                            Intent intentLastActivity=getIntent();
-                            clickTimes=intentLastActivity.getIntExtra("clickTimes",clickTimes);
-                            String url = UrlData.getUrlYy()+"/api/Default/IsStartService?IdentityID=" + sp.getString("identityId", "");
-                            try {
-                                HttpClient httpClient = new DefaultHttpClient();
-                                HttpGet httpGet = new HttpGet(url);
-                                HttpResponse execute = httpClient.execute(httpGet);
-                                if (execute.getStatusLine().getStatusCode() == 200||clickTimes>3) {
-                                    HttpEntity entity = execute.getEntity();
-                                    String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                                    msg.what = 1;
-                                    msg.obj = response;
-                                    handler.sendMessage(msg);
+                            String response;
+                            String url = UrlData.getUrlYy()+"/api/AndroidApi/IsStartService?IdentityID=" + sp.getString("identityId", "");
+                            try{
+                                response= MyConnection.setMyHttpClient(url);
+                                if (response!=null) {
+                                    if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                                        msg.what = 2;
+                                        msg.obj = response;//返回错误原因
+                                        Log.e("GetHelperInfo",response);
+                                    }
+                                    if(response.equals("验证过期")){
+                                        //执行token过期的操作
+                                        msg.what=4;
+                                        msg.obj=response;
+                                        Log.e("GetHelperInfo",response);
+                                    }
+                                    else {
+                                        msg.what = 1;
+                                        msg.obj = response;//返回正常数据
+                                    }
+                                }else {
+                                    msg.what = 3;
+                                    Log.e("GetHelperInfo","未连接网络");
                                 }
-                            } catch (Exception ex) {
-                                msg.what = 3;
-                                handler.sendMessage(msg);
-                                ex.printStackTrace();
                             }
+                            catch (Exception e) {
+                                msg.what = 3;
+                                Log.e("GetHelperInfo","未连接网络");
+                            }
+                            handler.sendMessage(msg);
                         }
                     }.start();
                 }
@@ -273,14 +284,27 @@ public class MenuActivity extends Activity implements View.OnClickListener{
                         intent.putExtras(bundle);
                         MenuActivity.this.startActivity(intent);
                     } else {
+                        //如果当前没有服务则跳转服务对象列表
                         Intent intent = new Intent(MenuActivity.this, ServiceObjectActivity.class);
                         MenuActivity.this.startActivity(intent);
                     }
                 } catch (Exception ex) {
                     Log.i("result2", ex.getMessage());
                 }
-            } else if (msg.what == 2) {
-
+            }
+            if(msg.what==2)
+            {
+                Toast.makeText(MenuActivity.this,msg.obj.toString(),Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==3)
+            {
+                Toast.makeText(MenuActivity.this,"未连接到网络",Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==4)
+            {
+                Toast.makeText(MenuActivity.this,"验证过期",Toast.LENGTH_LONG).show();
+            }
+            if (msg.what == 5) {
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     JsonNode node = mapper.readTree(msg.obj.toString());
@@ -317,10 +341,13 @@ Log.i("ce","downloading");
                     ex.printStackTrace();
                 }
             }
-            else
-            {
-                Toast.makeText(MenuActivity.this,"未连接到网络！",Toast.LENGTH_LONG).show();
+            if(msg.what==6){
+                Toast.makeText(MenuActivity.this,"获取版本号失败",Toast.LENGTH_LONG).show();
             }
+            else{
+
+            }
+
         }
     };
 
@@ -342,24 +369,25 @@ Log.i("ce","downloading");
         new Thread() {
             @Override
             public void run() {
-                String url = UrlData.getUrlYy()+"/api/Default/GetVersionCode?PercentVersionCode=" + percentVisionCode;
+                String url = UrlData.getUrlYy()+"/api/AndroidApi/GetVersionCode?PercentVersionCode=" + percentVisionCode;
                 Message msg = new Message();
                 try {
                     HttpClient httpClient = new DefaultHttpClient();
                     HttpGet httpGet = new HttpGet(url);
+                    httpGet.addHeader("auth", TokenData.getTokenValue());
                     HttpResponse execute = httpClient.execute(httpGet);
                     if (execute.getStatusLine().getStatusCode() == 200) {
                         HttpEntity entity = execute.getEntity();
                         String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                        msg.what = 2;
+                        msg.what = 5;
                         msg.obj = response;
                         handler.sendMessage(msg);
                     } else {
-                        msg.what = 3;
+                        msg.what = 6;
                         handler.sendMessage(msg);
                     }
                 } catch (Exception ex) {
-                    msg.what = 3;
+                    msg.what = 6;
                     handler.sendMessage(msg);
                     ex.printStackTrace();
                 }

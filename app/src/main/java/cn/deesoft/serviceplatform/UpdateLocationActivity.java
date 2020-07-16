@@ -50,6 +50,7 @@ import java.util.LinkedHashMap;
 import Model.ResultInfo;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 public class UpdateLocationActivity extends AppCompatActivity implements  LocationSource, AMapLocationListener
@@ -252,27 +253,34 @@ public class UpdateLocationActivity extends AppCompatActivity implements  Locati
                         new Thread() {
                             @Override
                             public void run() {
-                                String url = UrlData.getUrl()+"/api/Default/LocationUpdate?ID=" + ID + "&Latitude=" +Double.toString(latitude)+"&Longitude="+Double.toString(longitude) ;
+                                String url = UrlData.getUrl()+"/api/AndroidApi/LocationUpdate?ID=" + ID + "&Latitude=" +Double.toString(latitude)+"&Longitude="+Double.toString(longitude) ;
                                 Message msg = new Message();
-                                try {
-                                    HttpClient httpClient = new DefaultHttpClient();
-                                    HttpGet httpGet = new HttpGet(url);
-                                    HttpResponse execute = httpClient.execute(httpGet);
-                                    if (execute.getStatusLine().getStatusCode() == 200) {
-                                        HttpEntity entity = execute.getEntity();
-                                        String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                                        msg.what = 1;
-                                        msg.obj = response;
-                                        handler.sendMessage(msg);
-                                    } else {
-                                        msg.what = 2;
-                                        handler.sendMessage(msg);
+                                String response;
+                                try{
+                                    response= MyConnection.setMyHttpClient(url);
+                                    if (response!=null) {
+                                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                                            msg.what = 2;
+                                            msg.obj = response;//返回错误原因
+                                        }
+                                        if(response.equals("验证过期")){
+                                            //执行token过期的操作
+                                            msg.what=4;
+                                            msg.obj=response;
+                                            Log.e("验证失败",response);
+                                        }
+                                        else {
+                                            msg.what = 1;
+                                            msg.obj = response;//返回正常数据
+                                        }
+                                    }else {
+                                        msg.what = 3;
                                     }
-                                } catch (Exception ex) {
-                                    msg.what = 3;
-                                    handler.sendMessage(msg);
-                                    ex.printStackTrace();
                                 }
+                                catch (Exception e) {
+                                    msg.what = 3;
+                                }
+                                handler.sendMessage(msg);
                             }
                         }.start();
 //                        Intent intent=new Intent();

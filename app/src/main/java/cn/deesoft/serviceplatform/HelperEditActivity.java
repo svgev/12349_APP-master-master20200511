@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -44,6 +45,7 @@ import Model.Helper;
 import Model.ResultInfoList;
 import Util.ActivityManager;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 import static Util.GetVillageList.getVillageList;
@@ -129,9 +131,6 @@ public class HelperEditActivity extends AppCompatActivity {
 
         String selectedTown = txtTown.getText().toString();
         villageList = getVillageList(selectedTown);
-
-
-
 
         txtSex.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -282,25 +281,37 @@ public class HelperEditActivity extends AppCompatActivity {
         new Thread(new Runnable(){
             @Override
             public void run() {
-                String url= UrlData.getUrlYy()+"/api/Default/EditHelperInfo?id="+ID+"&identityId="+identityId+"&trueName="+helperName+"&sex="+sex+"&phoneNumber="+phoneNumber+"&town="+town+"&village="+village+"&addr="+addr;
+                String url= UrlData.getUrlYy()+"/api/AndroidApi/EditHelperInfo?id="+ID+"&identityId="+identityId+"&trueName="+helperName+"&sex="+sex+"&phoneNumber="+phoneNumber+"&town="+town+"&village="+village+"&addr="+addr;
+                String response="";
                 Message msg = new Message();
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                        msg.what = 1;
-                        msg.obj = response;
-                        handler.sendMessage(msg);
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                            Log.e("GetHelperInfo",response);
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("GetHelperInfo",response);
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
                     }else {
                         msg.what = 3;
-                        handler.sendMessage(msg);
+                        Log.e("GetHelperInfo","未连接网络");
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                    Log.e("GetHelperInfo","未连接网络");
+                }
+                handler.sendMessage(msg);
             }
         }).start();
     }
@@ -315,7 +326,6 @@ public class HelperEditActivity extends AppCompatActivity {
             Model.ResultInfo<LinkedHashMap> list=new Model.ResultInfo<LinkedHashMap>();
             if(msg.what==1)
             {
-
                 try {
                     ObjectMapper mapper = new ObjectMapper();
                     JsonNode node=mapper.readTree(msg.obj.toString());
@@ -328,9 +338,10 @@ public class HelperEditActivity extends AppCompatActivity {
                         intent.putExtra("Town",town);
                         intent.putExtra("helperId","编号："+ID);
                         HelperEditActivity.this.startActivity(intent);
+                        HelperEditActivity.this.finish();
                     }
                     else {
-                        Toast.makeText(HelperEditActivity.this, list.Msg, Toast.LENGTH_LONG).show();
+                        Toast.makeText(HelperEditActivity.this, "验证错误", Toast.LENGTH_LONG).show();
                     }
 
                 }
@@ -339,12 +350,18 @@ public class HelperEditActivity extends AppCompatActivity {
                     Toast.makeText(HelperEditActivity.this,"出现未知异常，请联系管理员!",Toast.LENGTH_LONG).show();
                 }
             }
-            else if(msg.what==3)
+            if(msg.what==2)
             {
-                Toast.makeText(HelperEditActivity.this,"出现未知异常，请联系管理员!",Toast.LENGTH_LONG).show();
+                Toast.makeText(HelperEditActivity.this,msg.obj.toString(),Toast.LENGTH_LONG).show();
             }
-
-
+            if(msg.what==3)
+            {
+                Toast.makeText(HelperEditActivity.this,"未连接到网络",Toast.LENGTH_LONG).show();
+            }
+            if(msg.what==4)
+            {
+                Toast.makeText(HelperEditActivity.this,"验证过期",Toast.LENGTH_LONG).show();
+            }
         }
     };
 
@@ -395,7 +412,7 @@ public class HelperEditActivity extends AppCompatActivity {
         }
     }
 
-    public  boolean isDate(String Ai) {
+    private  boolean isDate(String Ai) {
 
         String strYear = Ai.substring(6, 10);// 年份
         String strMonth = Ai.substring(10, 12);// 月份
@@ -441,5 +458,10 @@ public class HelperEditActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        HelperEditActivity.this.finish();
     }
 }

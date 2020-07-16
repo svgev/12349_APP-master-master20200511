@@ -1,5 +1,6 @@
 package cn.deesoft.serviceplatform;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,17 +47,20 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+import Model.Older;
 import Model.ResultInfoList;
 import Util.DateUtil;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 public class OlderDetailActivity extends AppCompatActivity {
 
     private Dialog mWeiboDialog;
-
+    private String currentArea;
 
     private String olderName;
+    private int age;
     private String olderAge;
     private String sex;
     private String olderIdentityId;
@@ -71,6 +76,15 @@ public class OlderDetailActivity extends AppCompatActivity {
     private String diseaseHistory;
     private String ID;
     private String guideAddress;
+    private String isDisability;
+    private String isPoor;
+    private String isLonely;
+    private String isOldAge;
+    private String isEmpty;
+    private String isLiving;
+    private String enable;
+    private String living;
+    private String strState;
 
 
     private String dlngX;
@@ -95,11 +109,14 @@ public class OlderDetailActivity extends AppCompatActivity {
     private TextView txtContactName;
     private TextView txtContactRelationship;
     private TextView txtDiseaseHistory;
+    private Button btnEditInfo;
     private MapContainer map_container;
 
     private TextView txtIsLiving;
+    private TextView txtIsEnable;
+    private TextView txtState;
     private ImageView imgPhoto;
-    private Button btnUpdateLocation;
+    private TextView btnUpdateLocation;
     private SimpleDateFormat df;
     private ScrollView scrollView;
     Boolean apkExist;
@@ -113,14 +130,19 @@ public class OlderDetailActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         olderName = intent.getStringExtra("TrueName");
+        currentArea=intent.getStringExtra("CurrentArea");
         ID = intent.getStringExtra("ID");
         olderMobile = null;
         olderAddress=null;
+        strState="";
+        living="true";
+        enable="true";
+        btnEditInfo=findViewById(R.id.btnEditInfo);
         txtLongitude=findViewById(R.id.txtLongitude);
         txtLatitude=findViewById(R.id.txtLatitude);
         txtOlderID=findViewById(R.id.txtNumber);
         txtOlderID.setText(ID);
-
+        txtState=findViewById(R.id.txtState);
 
         initOlder();
 
@@ -157,6 +179,36 @@ public class OlderDetailActivity extends AppCompatActivity {
                 OlderDetailActivity.this.startActivity(intent);
             }
         });
+        btnEditInfo.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent();
+                intent.putExtra("CurrentArea", currentArea);
+                intent.putExtra("ID",ID);
+                intent.putExtra("Name",olderName);
+                intent.putExtra("IdentityId",olderIdentityId);
+                intent.putExtra("PhoneNumber",olderMobile);
+                intent.putExtra("Town",olderTown);
+                intent.putExtra("Village",olderVillage);
+                intent.putExtra("Addr",olderAddress);
+                intent.putExtra("Sex",sex);
+                intent.putExtra("Contact",olderContactName);
+                intent.putExtra("ContactRelationship", contactRelationship);
+                intent.putExtra("ContactNumber",contactNumber);
+                intent.putExtra("DiseaseHistory",diseaseHistory);
+                intent.putExtra("IsDisability",isDisability);
+                intent.putExtra("IsEmpty",isEmpty);
+                intent.putExtra("IsEnable",enable);
+                intent.putExtra("IsLiving",living);
+                intent.putExtra("IsLonely",isLonely);
+                intent.putExtra("IsOldAge",isOldAge);
+                intent.putExtra("IsPoor",isPoor);
+
+                intent.setClass(OlderDetailActivity.this,OlderEditActivity.class);
+                OlderDetailActivity.this.startActivity(intent);
+            }
+        });
 
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -174,25 +226,33 @@ public class OlderDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Message msg = new Message();
-
-                String url = UrlData.getUrl() + "/api/Default/GetOlderById?olderId=" + ID;
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 1;
-                        msg.obj = response;
-                        firstPageHandler.sendMessage(msg);
-                    } else {
-                        msg.what = 2;
-                        firstPageHandler.sendMessage(msg);
+                String response;
+                String url = UrlData.getUrl() + "/api/AndroidApi/GetOlderById?olderId=" + ID;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("验证失败",response);
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
                     }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                }
+                firstPageHandler.sendMessage(msg);
             }
         }.start();
     }
@@ -217,12 +277,34 @@ public class OlderDetailActivity extends AppCompatActivity {
                             olderVillage = map.get("Village").toString();}
                             sex=map.get("Sex").toString();
                             olderIdentityId=map.get("IdentityID").toString();
+                            isLiving=map.get("IsLiving").toString();
+                            isDisability=map.get("IsDisability").toString();
+                            isEmpty=map.get("IsEmpty").toString();
+                            isLonely=map.get("IsLonely").toString();
+                            isOldAge=map.get("IsOldAge").toString();
+                            isPoor=map.get("IsPoor").toString();
+                            if(isDisability.equals("true")){
+                                strState=strState+"/残疾";
+                            }
+                            if(isPoor.equals("true")){
+                                strState=strState+"/贫困";
+                            }
+                            if(isLonely.equals("true")){
+                                strState=strState+"/孤寡";
+                            }
+                            if(isOldAge.equals("true")){
+                                strState=strState+"/高龄";
+                            }
+                            if(isEmpty.equals("true")){
+                                strState=strState+"/空巢";
+                            }
 
                             String birthday = map.get("Birthday").toString();
                             birthday = birthday.substring(0, birthday.indexOf("T"));
-                            int age = DateUtil.getAgeFromBirthTime(birthday);
+                            age = DateUtil.getAgeFromBirthTime(birthday);
+
                             if(map.get("Addr")!=(null)){
-                            olderAddress = map.get("Addr").toString()+" ➯";
+                            olderAddress = map.get("Addr").toString();
                             guideAddress=map.get("Addr").toString();}else {
                                 olderAddress="";
                             }
@@ -233,14 +315,14 @@ public class OlderDetailActivity extends AppCompatActivity {
 
                             if(map.get("Longitude").toString().equals("0.0")||map.get("Longitude").toString().equals("0.0")){
                                 //如果没有有效经纬度传回，先根据地址查找经纬度再标点
-                                txtLongitude.setText("Longitude/"+map.get("Longitude").toString());
-                                txtLatitude.setText("Latitude/"+map.get("Latitude").toString());
                                 getLocationFromApi();
+                                txtLongitude.setText(dlngX);
+                                txtLatitude.setText(dlatY);
                             }
                             if(map.get("Longtitude")==null||map.get("Latitude")==null){
-                                txtLongitude.setText("Longitude/");
-                                txtLatitude.setText("Latitude/");
                                 getLocationFromApi();
+                                txtLongitude.setText(dlngX);
+                                txtLatitude.setText(dlatY);
                             }
                             if((!map.get("Longitude").toString().equals("0.0"))&&(!map.get("Latitude").toString().equals("0.0"))&&map.get("Longitude")!=null&&map.get("Latitude")!=null){
                                 //如果传回有效经纬度，直接标点
@@ -248,11 +330,12 @@ public class OlderDetailActivity extends AppCompatActivity {
                                 dlatY=map.get("Latitude").toString();
                                 setMyMarker(dlngX,dlatY);
                                 //显示经纬度数值
-                                txtLongitude.setText("Longitude/"+map.get("Longitude").toString());
-                                txtLatitude.setText("Latitude/"+map.get("Latitude").toString());
+                                txtLongitude.setText(dlngX);
+                                txtLatitude.setText(dlatY);
                             }
 
-                            //判断在世
+                            //判断在世和是否退出服务
+                            Boolean isEnable=Boolean.valueOf(map.get("IsEnable").toString());
                             Boolean isLiving=Boolean.valueOf(map.get("IsLiving").toString());
                             if(!isLiving){
                                 Glide.with(OlderDetailActivity.this).load(R.mipmap.nophoto_black).into(imgPhoto);
@@ -266,14 +349,13 @@ public class OlderDetailActivity extends AppCompatActivity {
                                 olderContactName="";
                             }
                             if(map.get("ContactRelationship")!=(null)){
-                                contactRelationship = " ("+map.get("ContactRelationship").toString()+")";}else {
+                                contactRelationship =map.get("ContactRelationship").toString();}else {
                                 contactRelationship="";
                             }
                             if(map.get("DiseaseHistory")!=(null)){
                                 diseaseHistory = map.get("DiseaseHistory").toString();}else {
                                 diseaseHistory="";
                             }
-
 
                             txtName = findViewById(R.id.txtName);
                             txtAge = findViewById(R.id.txtAge);
@@ -283,11 +365,13 @@ public class OlderDetailActivity extends AppCompatActivity {
                             txtTown = findViewById(R.id.txtTown);
                             txtVillage = findViewById(R.id.txtVillage);
                             txtAddress = findViewById(R.id.txtAddress);
+                            txtIsEnable=findViewById(R.id.txtBeServiced);
                             txtIsLiving=findViewById(R.id.txtIsLiving);
                             txtContactName=findViewById(R.id.txtContact);
                             txtContactNumber=findViewById(R.id.txtContactMobile);
                             txtDiseaseHistory=findViewById(R.id.txtDiseaseHistory);
 
+                            txtState.setText(strState);
                             txtName.setText(olderName);
                             txtAge.setText(String.valueOf(age)+"岁");
                             txtSex.setText(sex);
@@ -295,8 +379,8 @@ public class OlderDetailActivity extends AppCompatActivity {
                             txtIdentityId.setText(olderIdentityId);
                             txtTown.setText( olderTown);
                             txtVillage.setText(olderVillage);
-                            txtAddress.setText(olderAddress);
-                            txtContactName.setText(olderContactName+contactRelationship);
+                            txtAddress.setText(olderAddress+" ➯");
+                            txtContactName.setText(olderContactName+"("+contactRelationship+")");
                             txtContactNumber.setText(contactNumber);
                             txtDiseaseHistory.setText(diseaseHistory);
                             txtAddress.setOnClickListener(new View.OnClickListener() {
@@ -313,11 +397,24 @@ public class OlderDetailActivity extends AppCompatActivity {
                             if(!isLiving){
                                 txtIsLiving.setVisibility(View.VISIBLE);
                                 txtIsLiving.setText("(过世)");
+                                living="false";
+                            }
+                            if(!isEnable){
+                                txtIsEnable.setText("退出服务");
+                                enable="false";
                             }
                         }
                     } catch (Exception ex) {
                     }
-
+                case 2:
+                    Toast.makeText(OlderDetailActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    break;
+                case 3:
+                    Toast.makeText(OlderDetailActivity.this,"未连接到网络",Toast.LENGTH_LONG);
+                    break;
+                case 4:
+                    Toast.makeText(OlderDetailActivity.this,"验证过期",Toast.LENGTH_LONG);
+                    break;
             }
         }
     };
@@ -325,6 +422,8 @@ public class OlderDetailActivity extends AppCompatActivity {
 
     private void openAppToGuide() { //打开高德App进行导航
         try {
+            Log.e("x", dlngX);
+
             Intent intent = new Intent("android.intent.action.VIEW", android.net.Uri.parse("amapuri://route/plan/?did=BGVIS2&dlat="+dlatY+"&dlon="+dlngX+"&dname=目的地&dev=0&t=0"));
             intent.setPackage("com.autonavi.minimap");
             startActivity(intent);
@@ -401,11 +500,15 @@ public class OlderDetailActivity extends AppCompatActivity {
     }
 
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                this.finish();  // back button
+                Intent intent = new Intent(OlderDetailActivity.this, OlderListActivity.class);
+                intent.putExtra("Area",currentArea);
+                OlderDetailActivity.this.startActivity(intent);
+                OlderDetailActivity.this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

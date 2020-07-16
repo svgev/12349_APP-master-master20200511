@@ -95,7 +95,10 @@ public class AdminMenuActivity extends AppCompatActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:
-        this.finish();  // back button
+        Intent intent=new Intent(AdminMenuActivity.this,AdminAreaActivity.class);
+        AdminMenuActivity.this.startActivity(intent);
+        AdminMenuActivity.this.finish();
+        // back button
         return true;
     }
     return super.onOptionsItemSelected(item);

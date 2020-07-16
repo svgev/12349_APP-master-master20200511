@@ -1,5 +1,6 @@
 package cn.deesoft.serviceplatform;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -44,6 +45,7 @@ import Model.ResultInfo;
 import Util.ActivityManager;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.UrlData;
 
 public class HelperInfoActivity extends AppCompatActivity implements BootCompletedReceiver.Message{
@@ -122,74 +124,82 @@ public class HelperInfoActivity extends AppCompatActivity implements BootComplet
             @Override
             public void run() {
                 Message msg = new Message();
-                String url = UrlData.getUrlYy()+ "/api/Default/GetHelperInfo?IdentityID="+sp.getString("identityId","");
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-                        msg.what = 0x123;
-                        msg.obj = response;
-                        handler.sendMessage(msg);
+                String url = UrlData.getUrlYy()+ "/api/AndroidApi/GetHelperInfo?IdentityID="+sp.getString("identityId","");
+                String response="";
+                 try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                            Log.e("GetHelperInfo",response);
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("GetHelperInfo","验证过期");
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
+                        Log.e("GetHelperInfo","未连接网络");
                     }
-                    else
-                    {
-                        msg.what = 0x124;
-                        handler.sendMessage(msg);
-                    }
-                } catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
-                    msg.what = 0x124;
-                    handler.sendMessage(msg);
-                    ex.printStackTrace();
                 }
+                catch (Exception e) {
+                    msg.what = 3;
+                    Log.e("GetHelperInfo","未连接网络");
+                }
+                handler.sendMessage(msg);
             }
         }.start();
     }
 
-    Handler handler=new Handler()
-    {
-        public void handleMessage(Message msg)
-        {
+    Handler handler=new Handler() {
+        public void handleMessage(Message msg) {
             DialogUtil.closeDialog(mWeiboDialog);
             ResultInfo<LinkedHashMap> resultInfo = new ResultInfo<LinkedHashMap>();
-            if(msg.what==291)
-            {
-                try {
-                    String string=msg.obj.toString();
-                    ObjectMapper mapper=new ObjectMapper();
-                    JsonNode node=mapper.readTree(string);
-                    resultInfo=mapper.readValue(node.toString(),resultInfo.getClass());
+            switch (msg.what) {
+                case 1:
+                    try {
+                        String string = msg.obj.toString();
+                        ObjectMapper mapper = new ObjectMapper();
+                        JsonNode node = mapper.readTree(string);
+                        resultInfo = mapper.readValue(node.toString(), resultInfo.getClass());
 
-                    txtName.setText(resultInfo.Data.get("Name").toString());
-                    txtPhoneNumber.setText(resultInfo.Data.get("PhoneNumber").toString());
-                    if(resultInfo.Data.get("Town")!=null) {
-                        txtTown.setText(resultInfo.Data.get("Town").toString());
-                    }
-                    if(resultInfo.Data.get("Village")!=null) {
-                        txtVillage.setText(resultInfo.Data.get("Village").toString());
-                    }
-                    if(resultInfo.Data.get("Photo")==null){
-                        Glide.with(HelperInfoActivity.this).load(UrlData.getUrlYy()+"/Images/nophoto.png").into(imgPhoto);
-                    }
-                    else {
-                        Glide.with(HelperInfoActivity.this).load(UrlData.getUrlYy() + resultInfo.Data.get("Photo").toString()).into(imgPhoto);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.putString("photo", UrlData.getUrlYy() + resultInfo.Data.get("Photo").toString());
-                        editor.commit();
-                    }
-                    }
-                catch(Exception ex)
-                {
-                    Log.i("result2",ex.getMessage());
-                }
+                        txtName.setText(resultInfo.Data.get("Name").toString());
+                        txtPhoneNumber.setText(resultInfo.Data.get("PhoneNumber").toString());
+                        if (resultInfo.Data.get("Town") != null) {
+                            txtTown.setText(resultInfo.Data.get("Town").toString());
+                        }
+                        if (resultInfo.Data.get("Village") != null) {
+                            txtVillage.setText(resultInfo.Data.get("Village").toString());
+                        }
+                        if (resultInfo.Data.get("Photo") == null) {
+                            Glide.with(HelperInfoActivity.this).load(UrlData.getUrlYy() + "/Images/nophoto.png").into(imgPhoto);
+                        } else {
+                            Glide.with(HelperInfoActivity.this).load(UrlData.getUrlYy() + resultInfo.Data.get("Photo").toString()).into(imgPhoto);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.putString("photo", UrlData.getUrlYy() + resultInfo.Data.get("Photo").toString());
+                            editor.commit();
+                        }
+                    } catch (Exception ex) {
+                        Log.i("result2", ex.getMessage());
+                    }break;
+                case 2:
+                    Toast.makeText(HelperInfoActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    break;
+                case 3:
+                    Toast.makeText(HelperInfoActivity.this,"未连接到网络",Toast.LENGTH_LONG);
+                    break;
+                case 4:
+                    Toast.makeText(HelperInfoActivity.this, "验证过期", Toast.LENGTH_LONG).show();
+                    break;
             }
-            else
-            {
-                Toast.makeText(HelperInfoActivity.this,"未连接到网络！",Toast.LENGTH_LONG).show();
-            }
+
         }
     };
     @Override
@@ -225,5 +235,12 @@ public class HelperInfoActivity extends AppCompatActivity implements BootComplet
             e.printStackTrace();
         }
         return code;
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        HelperInfoActivity.this.finish();
     }
 }

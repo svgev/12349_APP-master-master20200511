@@ -1,11 +1,14 @@
 package cn.deesoft.serviceplatform;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,6 +34,7 @@ import Model.Older;
 import Model.ResultInfoList;
 import Util.DateUtil;
 import Util.DialogUtil;
+import Util.MyConnection;
 import Util.UrlData;
 import cn.deesoft.serviceplatform.Adapter.OlderAdapter;
 
@@ -42,6 +46,7 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
     private EditText searchText;
     private TextView searchButton;
     public String searchContent;
+
 
     private LoadOlderList listView;
     OlderAdapter olderAdapter;
@@ -125,12 +130,20 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
                         }
                     } catch (Exception ex) {
                     }
-
 //          通知适配器数据已经改变
-
                     olderAdapter.notifyDataSetChanged();
 //          加载完成
                     listView.loadComplete();
+                    break;
+                case 2:
+                    Toast.makeText(OlderListActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    break;
+                case 3:
+                    Toast.makeText(OlderListActivity.this,"未连接到网络",Toast.LENGTH_LONG);
+                    break;
+                case 4:
+                    Toast.makeText(OlderListActivity.this,msg.obj.toString(),Toast.LENGTH_LONG);
+                    Log.e("sssssss","ssssss");
                     break;
             }
         }
@@ -141,28 +154,33 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
             @Override
             public void run() {
                 Message msg = new Message();
-
-                String url = UrlData.getUrl()+"/api/Default/GetOlderList?pageNum="+pageNum+"&town="+town+"&key="+key;
-                try {
-                    HttpClient httpClient = new DefaultHttpClient();
-                    HttpGet httpGet = new HttpGet(url);
-                    HttpResponse execute = httpClient.execute(httpGet);
-                    if (execute.getStatusLine().getStatusCode() == 200) {
-                        HttpEntity entity = execute.getEntity();
-                        String response = EntityUtils.toString(entity);   //将entity当中的数据转换为字符串
-                        msg.what = 1;
-                        msg.obj = response;
-                        firstPageHandler.sendMessage(msg);
-                    }
-                    else
-                    {
-                        msg.what = 2;
-                        firstPageHandler.sendMessage(msg);
+                String response="";
+                String url = UrlData.getUrl()+"/api/AndroidApi/GetOlderList?pageNum="+pageNum+"&town="+town+"&key="+key;
+                try{
+                    response= MyConnection.setMyHttpClient(url);
+                    if (response!=null) {
+                        if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+                            msg.what = 2;
+                            msg.obj = response;//返回错误原因
+                        }
+                        if(response.equals("验证过期")){
+                            //执行token过期的操作
+                            msg.what=4;
+                            msg.obj=response;
+                            Log.e("验证失败",response);
+                        }
+                        else {
+                            msg.what = 1;
+                            msg.obj = response;//返回正常数据
+                        }
+                    }else {
+                        msg.what = 3;
                     }
                 }
-                catch (Exception ex) {
-                    DialogUtil.closeDialog(mWeiboDialog);
+                catch (Exception e) {
+                    msg.what = 3;
                 }
+                firstPageHandler.sendMessage(msg);
             }
         }.start();
         firstPageHandler.sendEmptyMessageDelayed(1,100);
@@ -175,6 +193,9 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent intent=new Intent(OlderListActivity.this,AdminMenuActivity.class);
+                intent.putExtra("Area", town);
+                OlderListActivity.this.startActivity(intent);
                 this.finish();  // back button
                 return true;
         }
@@ -229,6 +250,7 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
                 intent.putExtra("IdentityId", (String) ((TextView) view.findViewById(R.id.olderIdentityID)).getText());
                 String iii= (String) ((TextView) view.findViewById(R.id.olderId)).getText();
                 //Toast.makeText(OlderListActivity.this, iii, Toast.LENGTH_LONG).show();
+                intent.putExtra("CurrentArea", town);
                 intent.putExtra("ID", (String) ((TextView) view.findViewById(R.id.olderId)).getText());
                 intent.setClass(OlderListActivity.this, OlderDetailActivity.class);
                 OlderListActivity.this.startActivity(intent);
@@ -237,4 +259,5 @@ public class OlderListActivity extends AppCompatActivity implements AdapterView.
             Toast.makeText(this,"请稍等",Toast.LENGTH_LONG).show();
         }
     }
+
 }

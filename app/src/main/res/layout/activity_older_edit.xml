@@ -1,0 +1,607 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ic_launcher_background"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:id="@+id/myScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="90dp"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="7dp"
+                            android:orientation="horizontal">
+
+                            <Spinner
+                                android:id="@+id/spLiving"
+                                android:layout_width="77dp"
+                                android:layout_height="35dp"
+                                android:padding="0dp"></Spinner>
+                            <Spinner
+                                android:id="@+id/spEnable"
+                                android:layout_width="109dp"
+                                android:layout_height="35dp"
+                                android:padding="0dp"></Spinner>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="0dp">
+
+                            <CheckBox
+                                android:id="@+id/cbIsOldAge"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="0dp"
+                                android:text="高龄" />
+
+                            <CheckBox
+                                android:id="@+id/cbIsDisability"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:text="残疾" />
+
+                            <CheckBox
+                                android:id="@+id/cbIsPoor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="0dp"
+                                android:text="贫困" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="0dp">
+
+                            <CheckBox
+                                android:id="@+id/cbIsLonely"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="孤寡" />
+
+                            <CheckBox
+                                android:id="@+id/cbIsEmpty"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="空巢" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="3dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerInParent="true"
+                            android:background="@drawable/usericon_circle" />
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/imgPhoto"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_centerInParent="true" />
+
+                    </RelativeLayout>
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="10dp"></LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <!--助老员姓名-->
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginTop="0dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="1dp"
+                            android:background="#317D6D"
+                            android:text="     "
+                            android:textColor="#317D6D"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/txtBeServiced"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="1dp"
+                            android:text="老人信息修改 "
+                            android:textColor="#317D6D"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="7dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtName"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="姓   名 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="性   别 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/txtSex"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:scrollbarStyle="insideOverlay"
+                        android:text=""
+                        android:textColor="#949494"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="14dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtPhoneNumber"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtPhoneNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="手机号 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/phoneNumberChecked"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginTop="0dp"
+                        android:text="手机号不能为空"
+                        android:textColor="@color/red"
+                        android:textSize="11sp"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/edtIdentityId"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtIdentityId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="身份证 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="0dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/checkId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginTop="2dp"
+                        android:text="身份证格式不正确"
+                        android:textColor="@color/red"
+                        android:textSize="11sp"
+                        android:visibility="invisible" />
+
+                    <TextView
+                        android:id="@+id/existedId"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:layout_marginTop="2dp"
+                        android:text="身份证已存在"
+                        android:textColor="@color/red"
+                        android:textSize="14sp"
+                        android:visibility="invisible" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtTown"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="乡   镇 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/edtTown"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:text=""
+                        android:textColor="#949494"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/txtVillage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="0dp"
+                        android:text="街   道 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/edtVillage"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:scrollbarStyle="insideOverlay"
+                        android:text=""
+                        android:textColor="#949494"
+                        android:textSize="16sp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/edtAddr"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtAddr"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="住   址 "
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="24dp">
+
+                    <EditText
+                        android:id="@+id/edtContact"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtContact"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="家   属"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:id="@+id/txtRelationship"
+                        android:layout_width="210dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="90dp"
+                        android:background="@drawable/edit_background"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:scrollbarStyle="insideOverlay"
+                        android:text=""
+                        android:textColor="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="关   系"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/edtContactNumber"
+                        android:layout_width="195dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="105dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtContactNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="家属电话"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp">
+
+                    <EditText
+                        android:id="@+id/edtDiseaseHistory"
+                        android:layout_width="195dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="105dp"
+                        android:background="@drawable/edit_background"
+                        android:hint=""
+                        android:inputType="text"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="2dp"
+                        android:paddingBottom="2dp"
+                        android:textColor="#949494"
+                        android:textColorHint="#949494"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/txtDiseaseHistory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="27dp"
+                        android:layout_marginTop="2dp"
+                        android:text="疾病历史"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+                <Button
+                    android:id="@+id/btnSubmit"
+                    android:layout_width="200dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:text="提交" />
+
+            </LinearLayout>
+
+            <!--
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <cn.deesoft.serviceplatform.ScrollSelector
+        android:id="@+id/scrollSelector"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@android:color/darker_gray"/>
+</RelativeLayout>-->
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

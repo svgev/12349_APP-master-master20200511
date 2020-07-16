@@ -45,6 +45,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import Util.ServiceUtil;
+import Util.TokenData;
 import Util.UrlData;
 
 import static com.amap.api.location.AMapLocationClientOption.AMapLocationMode.Hight_Accuracy;
@@ -322,13 +323,13 @@ public class LocalService extends Service {
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String content = "\n发送时间:" + df.format(new Date()).toString() + "\n经度：" + longitude;
                             content += "       纬度：" + latitude+"\n 定位方式:"+locationType+"    定位精度:"+accuracy;
-                            String url = (UrlData.getUrlYy()+"/api/Default/SaveInfo?phoneNumber=" + phoneNumber +"&identityID="+identityID+
+                            String url = (UrlData.getUrlYy()+"/api/AndroidApi/SaveInfo?phoneNumber=" + phoneNumber +"&identityID="+identityID+
                                     "&latitude=" + latitude + "&longitude=" + longitude + "&speed=" + speed +
                                     "&positionType="+locationType+"&aoiName="+aoiName+"&accuracy="+accuracy);
                             try {
                                 org.apache.http.client.HttpClient httpClient = new DefaultHttpClient();
-
                                 HttpGet httpGet = new HttpGet(url);
+                                httpGet.addHeader("auth", TokenData.getTokenValue());
                                 HttpResponse execute = httpClient.execute(httpGet);
                             } catch (Exception e) {
                                 Looper.prepare();

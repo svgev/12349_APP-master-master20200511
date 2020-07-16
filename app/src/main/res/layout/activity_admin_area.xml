@@ -114,37 +114,38 @@
         android:layout_width="650px"
         android:layout_height="0dp"
         android:layout_weight="4.5"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="20dp"
         android:layout_gravity="center_horizontal"
         android:background="@android:color/transparent"
         >
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.0"
-        android:orientation="vertical"
-        android:gravity="bottom"
-        android:visibility="invisible">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1.0"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="bottom"-->
+<!--        android:visibility="invisible">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="3dp"
-            android:text="德清12349便民服务中心"
-            android:textSize="14sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="3dp"-->
+<!--            android:text="德清12349便民服务中心"-->
+<!--            android:textSize="14sp" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:text="服务热线：12349"
-            android:textSize="14sp" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="5dp"-->
+<!--            android:text="服务热线：12349"-->
+<!--            android:textSize="14sp" />-->
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 </LinearLayout>
     </ScrollView>
 </LinearLayout>

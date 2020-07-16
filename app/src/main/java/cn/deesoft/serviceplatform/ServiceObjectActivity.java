@@ -36,6 +36,7 @@ import Util.ActivityManager;
 import Util.DateUtil;
 import Util.DialogUtil;
 import Util.HttpUtil;
+import Util.MyConnection;
 import Util.UrlData;
 import cn.deesoft.serviceplatform.Adapter.SelectObjectListAdapter;
 
@@ -65,26 +66,34 @@ public class ServiceObjectActivity extends AppCompatActivity {
     new Thread() {
       @Override
       public void run() { Message msg = new Message();
-        String url = UrlData.getUrlYy()+"/api/Default/GetOlders?identityID="+sp.getString("identityId","");
-        try {
-          HttpClient httpClient = new DefaultHttpClient();
-          HttpGet httpGet = new HttpGet(url);
-          HttpResponse execute = httpClient.execute(httpGet);
-          if (execute.getStatusLine().getStatusCode() == 200) {
-            HttpEntity entity = execute.getEntity();
-            String response = EntityUtils.toString(entity);//将entity当中的数据转换为字符串
-            msg.what = 1;
-            msg.obj = response;
-            handler.sendMessage(msg);
+      String response="";
+        String url = UrlData.getUrlYy()+"/api/AndroidApi/GetOlders?identityID="+sp.getString("identityId","");
+        try{
+          response= MyConnection.setMyHttpClient(url);
+          if (response!=null) {
+            if(response.equals("请求错误")||response.equals("未授权")||response.equals("禁止访问")||response.equals("文件未找到")||response.equals("未知错误")||response.equals("未连接到网络")) {
+              msg.what = 2;
+              msg.obj = response;//返回错误原因
+            }
+            if(response.equals("验证过期")){
+              //执行token过期的操作
+              msg.what=4;
+              msg.obj=response;
+              Log.e("验证失败",response);
+            }
+            else {
+              msg.what = 1;
+              msg.obj = response;//返回正常数据
+            }
+          }else {
+            msg.what = 3;
           }
-          else
-          {
-            msg.what = 2;
-            handler.sendMessage(msg);
-          }
-        } catch (Exception ex) {
-          DialogUtil.closeDialog(mWeiboDialog);
         }
+        catch (Exception e) {
+          msg.what = 3;
+        }
+        handler.sendMessage(msg);
+//        DialogUtil.closeDialog(mWeiboDialog);
       }
     }.start();
     listServiceOlder.setOnItemClickListener(
@@ -164,8 +173,16 @@ public class ServiceObjectActivity extends AppCompatActivity {
           Toast.makeText(ServiceObjectActivity.this,"出现未知异常，请联系管理员!！",Toast.LENGTH_LONG).show();
         }
       }
-      else if(msg.what==2) {
-        Toast.makeText(ServiceObjectActivity.this, "网络不可用！", Toast.LENGTH_LONG).show();
+      if(msg.what==2) {
+        Toast.makeText(ServiceObjectActivity.this, msg.obj.toString(), Toast.LENGTH_LONG).show();
+      }
+      if(msg.what==3) {
+        Toast.makeText(ServiceObjectActivity.this, "未连接到网络", Toast.LENGTH_LONG).show();
+      }
+      if(msg.what==4) {
+        Toast.makeText(ServiceObjectActivity.this, "验证过期", Toast.LENGTH_LONG).show();
+      }else {
+        Log.e("网络不好","无返回对象");
       }
     }
   };
