@@ -165,9 +165,9 @@ public class OlderDetailActivity extends AppCompatActivity {
         btnUpdateLocation=findViewById(R.id.btnLocation);
         map_container.setScrollView(scrollView);
 
-        imgPhoto = findViewById(R.id.imgPhoto);
-        Glide.with(OlderDetailActivity.this).load(R.mipmap.nophoto2).into(imgPhoto);
-
+//        imgPhoto = findViewById(R.id.imgPhoto);
+//        Glide.with(OlderDetailActivity.this).load(R.mipmap.nophoto2).into(imgPhoto);
+//
 
 
         btnUpdateLocation.setOnClickListener(new View.OnClickListener() {
@@ -499,8 +499,6 @@ public class OlderDetailActivity extends AppCompatActivity {
         }
     }
 
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -513,4 +511,5 @@ public class OlderDetailActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

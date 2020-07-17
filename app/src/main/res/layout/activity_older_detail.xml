@@ -36,7 +36,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="300dp"
+                            android:layout_height="250dp"
                            >
                             <cn.deesoft.serviceplatform.MapContainer
                                 android:id="@+id/map_container"
@@ -67,7 +67,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="50dp"
+                                    android:layout_marginTop="20dp"
                                     android:text=""
                                     android:textSize="18sp"
                                     android:textStyle="bold" />
@@ -149,15 +149,15 @@
                                         android:layout_marginLeft="0dp"
                                         android:layout_marginTop="1dp"
                                         android:textColor="#ffffff"
-                                        android:background="#999898"
+                                        android:background="#adadad"
                                         android:text="  基本信息  "
-                                        android:textSize="14sp" />
+                                        android:textSize="15sp" />
 
                                 </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="280dp"
                                     android:layout_height="1dp"
-                                    android:background="#999898"
+                                    android:background="#adadad"
                                     android:layout_marginTop="0dp">
                                 </RelativeLayout>
                                 <RelativeLayout
@@ -334,15 +334,15 @@
                                         android:layout_marginLeft="0dp"
                                         android:layout_marginTop="1dp"
                                         android:textColor="#ffffff"
-                                        android:background="#999898"
+                                        android:background="#adadad"
                                         android:text="  位置信息  "
-                                        android:textSize="14sp" />
+                                        android:textSize="15sp" />
 
                                 </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="280dp"
                                     android:layout_height="1dp"
-                                    android:background="#999898"
+                                    android:background="#adadad"
                                     android:layout_marginTop="0dp">
                                 </RelativeLayout>
 
@@ -437,15 +437,15 @@
                                         android:layout_marginLeft="0dp"
                                         android:layout_marginTop="1dp"
                                         android:textColor="#ffffff"
-                                        android:background="#999898"
+                                        android:background="#adadad"
                                         android:text="  其它信息  "
-                                        android:textSize="14sp" />
+                                        android:textSize="15sp" />
 
                                 </RelativeLayout>
                                 <RelativeLayout
                                     android:layout_width="280dp"
                                     android:layout_height="1dp"
-                                    android:background="#999898"
+                                    android:background="#adadad"
                                     android:layout_marginTop="0dp">
                                 </RelativeLayout>
                                 <RelativeLayout
@@ -545,18 +545,18 @@
 
                     </LinearLayout>
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imgPhoto"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_marginTop="260dp"
-                        android:layout_centerHorizontal="true" />
+<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                        android:id="@+id/imgPhoto"-->
+<!--                        android:layout_width="75dp"-->
+<!--                        android:layout_height="75dp"-->
+<!--                        android:layout_marginTop="260dp"-->
+<!--                        android:layout_centerHorizontal="true" />-->
 
-                    <ImageView
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:layout_marginTop="260dp"
-                        android:layout_centerHorizontal="true"  />
+<!--                    <ImageView-->
+<!--                        android:layout_width="75dp"-->
+<!--                        android:layout_height="75dp"-->
+<!--                        android:layout_marginTop="260dp"-->
+<!--                        android:layout_centerHorizontal="true"  />-->
 
                 </RelativeLayout>
             </LinearLayout>

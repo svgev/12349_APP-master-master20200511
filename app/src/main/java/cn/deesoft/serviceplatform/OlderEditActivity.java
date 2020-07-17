@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -181,8 +182,6 @@ public class OlderEditActivity extends AppCompatActivity {
 //        String selectedTown = txtTown.getText().toString();
         String selectedTown = olderTown;
         villageList = getVillageList(selectedTown);
-
-
 
         //初始化控件事件
         txtSex.setOnClickListener(new View.OnClickListener() {
@@ -433,6 +432,14 @@ public class OlderEditActivity extends AppCompatActivity {
                 SubmitInfo();
             }
         });
+
+
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.setHomeButtonEnabled(true);
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
 //    DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
@@ -487,6 +494,10 @@ public class OlderEditActivity extends AppCompatActivity {
 //            }
 //        }
 //    };
+
+
+
+
 
     Handler handler=new Handler()
     {
@@ -692,5 +703,21 @@ public class OlderEditActivity extends AppCompatActivity {
         } else {
             return false;
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        OlderEditActivity.this.finish();
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();  // back button
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
